@@ -70,10 +70,10 @@ button,.btn{background:#122342;color:#eaf2ff;border:1px solid #2d4774;padding:10
       <b>Enter local sunrise time</b><br>
       <input id="manualSunrise" type="time" step="1" value="06:00:00" style="margin-top:8px;padding:10px;border-radius:10px;border:1px solid #2d4774;background:#081327;color:white">
       <button class="primary" id="setManualSunrise" type="button">Set Sunrise</button>
-      <p class="lead" style="margin-top:8px">Use this only if browser location is not available.</p>
+      <p class="lead" style="margin-top:8px">Location unavailable? Enter the local sunrise time for your place. Panchapatchi timing starts from this sunrise.</p>
     </div>
     <div class="controls">
-      <button class="primary" id="locateBtn" type="button">Use My Location</button><button class="btn" id="manualBtn" type="button">Manual Sunrise</button>
+      <button class="primary" id="locateBtn" type="button">Use My Location</button><span class="lead" style="align-self:center">If GPS gives code 2, use Manual Sunrise.</span><button class="btn" id="manualBtn" type="button">Manual Sunrise</button>
       <a class="btn" href="#phaseWeek">Rising/Waning Week Cards</a>
       <a class="btn" href="#phaseTree">Day/Night Tree</a>
       <a class="btn" href="#activeTree">Active Tree</a>
@@ -139,26 +139,49 @@ function startTiming(sr,source){
 }
 function useLocation(){
   $('geoStatus').textContent='Requesting location...';
-  $('geoDetails').textContent='Please allow location to calculate local sunrise.';
+  $('geoDetails').textContent='Please allow location and make sure device location service is enabled.';
+
   if(!navigator.geolocation){
     $('geoStatus').textContent='Location unavailable';
-    $('geoDetails').textContent='Browser does not support geolocation. Enter sunrise manually.';
-    $('manualPanel').style.display='block';
+    $('geoDetails').textContent='This browser does not support geolocation. Enter local sunrise manually.';
+    const panel=$('manualPanel'); if(panel) panel.style.display='block';
     return;
   }
+
   navigator.geolocation.getCurrentPosition(
     pos=>{
       const sr=approxSunrise(pos.coords.latitude,pos.coords.longitude);
       startTiming(sr,`Local sunrise ${fmt(sr)} · fixed 12hr day/night`);
-      $('manualPanel').style.display='none';
+      const panel=$('manualPanel'); if(panel) panel.style.display='none';
     },
     err=>{
-      $('geoStatus').textContent='Location failed';
-      $('geoDetails').textContent='Allow location or enter sunrise manually.';
-      $('manualPanel').style.display='block';
-      console.warn(err);
+      let message='Location failed. Enter local sunrise manually.';
+      if(err.code===1){
+        message='Location permission denied. Allow location or enter local sunrise manually.';
+      }
+      if(err.code===2){
+        message='Location unavailable from device/browser. Turn on device location service or enter local sunrise manually.';
+      }
+      if(err.code===3){
+        message='Location request timed out. Try again or enter local sunrise manually.';
+      }
+
+      $('geoStatus').textContent='Manual sunrise needed';
+      $('geoDetails').textContent=message;
+
+      const panel=$('manualPanel');
+      if(panel) panel.style.display='block';
+
+      const manual=$('manualSunrise');
+      if(manual && !manual.value) manual.value='06:00:00';
+
+      console.warn('Geolocation error:', err.code, err.message || message);
     },
-    {enableHighAccuracy:false,timeout:12000,maximumAge:300000}
+    {
+      enableHighAccuracy:false,
+      timeout:20000,
+      maximumAge:0
+    }
   );
 }
 function setManualSunrise(){
