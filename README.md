@@ -1,3 +1,3 @@
-# Panchapatchi Tree App
+# Sarakalai Panchapatchi v022
 
-GitHub-ready static app combining live timing, Adhikara/Padupatchi, and all 4 cycle trees.
+Single-file timing app. Upload index.html and CNAME to GitHub Pages.
