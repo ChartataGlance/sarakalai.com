@@ -1,3 +1,3 @@
-# Sarakalai Panchapatchi v028
+# Sarakalai Panchapatchi v031
 
-Saved timing method with localStorage. Successful location stores lat/lon, hides timing choice buttons on next visit, and provides Change timing method.
+Adds Hind Madurai web font styling, mobile fixed bottom navigation, compact Nakshatra/Pada/Lord block, and side-by-side Adhikara/Padupatchi cards.

@@ -42,7 +42,7 @@ function renderMoon(){
  if($('tithiTitle')) $('tithiTitle').textContent=c.tithi || '--';
  if($('rasiText')) $('rasiText').textContent=`${c.rasiTamil} / ${c.rasiEnglish}`;
  if($('nakText')) $('nakText').textContent=`${c.nakTamil} / ${c.nakEnglish}`;
- if($('padaText')) $('padaText').textContent=c.pada;
+ if($('padaText')) $('padaText').textContent=`பாதம் ${c.pada}`;
  if($('lordText')) $('lordText').textContent=c.lord;
  const strip=$('tithiStrip');
  if(strip){
@@ -78,8 +78,10 @@ function renderCurrent(){
  if($('samamText')) $('samamText').textContent=`Samam ${c.samam}`;
  if($('currentPath')) $('currentPath').textContent=`${fmt(c.from)} → ${fmt(c.to)}`;
  if($('todayText')) $('todayText').textContent=`${c.dayTa} / ${c.dayEn}`;
- if($('adhiText')) $('adhiText').textContent=`${c.adhi.icon} ${c.adhi.name}`;
- if($('paduText')) $('paduText').textContent=`${c.padu.icon} ${c.padu.name}`;
+ if($('adhiEmoji')) $('adhiEmoji').textContent=c.adhi.icon;
+ if($('paduEmoji')) $('paduEmoji').textContent=c.padu.icon;
+ if($('adhiText')) $('adhiText').textContent=c.adhi.name;
+ if($('paduText')) $('paduText').textContent=c.padu.name;
  renderMicro(c);renderMoon();
 }
 function card(c,active=false){return `<article class="timeline-card ${active?'active':''}"><div class="topline"><span>${fmtDate(c.from)} · ${c.phase==='Rising Moon'?'வளர்பிறை':'தேய்பிறை'} · ${c.tithi}</span><span>${c.period} · Samam ${c.samam}</span></div><div class="body"><div class="birdbig">${c.bird.icon}</div><div><div class="name">${c.bird.name} · ${c.activity_en}</div><div class="time">${fmt(c.from)} → ${fmt(c.to)} · ${hms(c.duration)}</div></div></div><div class="context"><div><small>Adhikara</small><b>${c.adhi.icon} ${c.adhi.name}</b></div><div><small>Padupatchi</small><b>${c.padu.icon} ${c.padu.name}</b></div><div><small>Units</small><b>${c.minutes}/144</b></div><div><small>Inner</small><b>${hms(c.duration/5)}</b></div></div></article>`}
