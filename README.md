@@ -1,3 +1,1 @@
-Sarakalai Panchapatchi v026
-
-Front page timing app. Adhikara/Padu weekday cards moved to adhikara.html.
+# Sarakalai Panchapatchi v027 complete
