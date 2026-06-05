@@ -66,6 +66,12 @@ button,.btn{background:#122342;color:#eaf2ff;border:1px solid #2d4774;padding:10
       <div class="stat"><b>Period</b><span id="periodText">--</span></div>
       <div class="stat"><b>Inner Part</b><span id="innerText">--</span></div>
     </div>
+    <div id="manualPanel" style="display:none;margin-top:12px;background:#091831;border:1px solid #1d3154;border-radius:16px;padding:12px">
+      <b>Enter local sunrise time</b><br>
+      <input id="manualSunrise" type="time" step="1" value="06:00:00" style="margin-top:8px;padding:10px;border-radius:10px;border:1px solid #2d4774;background:#081327;color:white">
+      <button class="primary" id="setManualSunrise" type="button">Set Sunrise</button>
+      <p class="lead" style="margin-top:8px">Use this only if browser location is not available.</p>
+    </div>
     <div class="controls">
       <button class="primary" id="locateBtn" type="button">Use My Location</button><button class="btn" id="manualBtn" type="button">Manual Sunrise</button>
       <a class="btn" href="#phaseWeek">Rising/Waning Week Cards</a>
@@ -165,9 +171,17 @@ function setManualSunrise(){
 function init(){
   renderPhaseWeekdays();
   renderPhaseDayNightTree();
-  $('locateBtn').addEventListener('click',useLocation);
-  $('manualBtn').addEventListener('click',()=>{$('manualPanel').style.display='block'});
-  $('setManualSunrise').addEventListener('click',setManualSunrise);
+
+  const locateBtn = $('locateBtn');
+  const manualBtn = $('manualBtn');
+  const setManualBtn = $('setManualSunrise');
+
+  if(locateBtn) locateBtn.addEventListener('click', useLocation);
+  if(manualBtn) manualBtn.addEventListener('click', () => {
+    const panel = $('manualPanel');
+    if(panel) panel.style.display = 'block';
+  });
+  if(setManualBtn) setManualBtn.addEventListener('click', setManualSunrise);
 
   $('currentTitle').textContent='Local sunrise needed';
   $('currentPath').textContent='Tap Use My Location to calculate accurate local sunrise. No default timing is used.';
