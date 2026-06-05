@@ -3,6 +3,19 @@ const DAY_ORDER_TA=["ஞாயிறு","திங்கள்","செவ்�
 const DAY_EN={"ஞாயிறு":"Sunday","திங்கள்":"Monday","செவ்வாய்":"Tuesday","புதன்":"Wednesday","வியாழன்":"Thursday","வெள்ளி":"Friday","சனி":"Saturday"};
 const CLS={Eat:'eat',Walk:'walk',Rule:'rule',Sleep:'sleep',Death:'death'};
 const $=id=>document.getElementById(id);let APP,state={mode:'fallback',lat:null,lon:null,timeline:[],current:null};
+const STORAGE_KEY='sarakalai_timing_v1';
+function saveTiming(mode, extra={}){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({mode, savedAt:Date.now(), ...extra}));
+}
+function loadSavedTiming(){
+  try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch(e){return null}
+}
+function clearSavedTiming(){localStorage.removeItem(STORAGE_KEY)}
+function showTimingChoices(show){
+  const choices=$('timingChoice'), saved=$('savedTimingControls');
+  if(choices) choices.style.display=show?'flex':'none';
+  if(saved) saved.style.display=show?'none':'flex';
+}
 function pad(n){return String(n).padStart(2,'0')}function fmt(d){return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`}function hms(ms){const s=Math.max(0,Math.round(ms/1000)),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=s%60;return `${pad(h)}:${pad(m)}:${pad(x)}`}function addDays(d,n){let x=new Date(d);x.setDate(x.getDate()+n);return x}function dayTa(d){return DAY_ORDER_TA[d.getDay()]}function fmtDate(d){return d.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'})}
 function moonInfo(date=new Date()){const syn=29.530588853,new0=Date.UTC(2000,0,6,18,14,0);let age=((date-new0)/86400000)%syn;if(age<0)age+=syn;const deg=age/syn*360,phase=deg<180?'Rising Moon':'Waning Moon',half=phase==='Rising Moon'?deg:deg-180,block=Math.min(15,Math.floor(half/12)+1);return{deg,phase,block}}
 function key(phase,period){if(phase==='Rising Moon'&&period==='Day')return'rising_day';if(phase==='Rising Moon'&&period==='Night')return'rising_night';if(phase==='Waning Moon'&&period==='Day')return'waning_day';return'waning_night'}
@@ -17,11 +30,93 @@ function renderCurrent(){let c=state.current;if(!c)return;let now=new Date(),rem
 function card(c,active=false){return `<article class="timeline-card ${active?'active':''}"><div class="topline"><span>${fmtDate(c.from)} · ${c.phase} · Block ${c.moonBlock}/15</span><span>${c.period} · Samam ${c.samam}</span></div><div class="body"><div class="birdbig">${c.bird.icon}</div><div><div class="name">${c.bird.name} · ${c.activity_en}</div><div class="time">${fmt(c.from)} → ${fmt(c.to)} · ${hms(c.duration)}</div></div></div><div class="context"><div><small>Adhikara</small><b>${c.adhi.icon} ${c.adhi.name}</b></div><div><small>Padupatchi</small><b>${c.padu.icon} ${c.padu.name}</b></div><div><small>Units</small><b>${c.minutes}/144</b></div><div><small>Inner</small><b>${hms(c.duration/5)}</b></div></div></article>`}
 function renderCards(){let r=$('cardList');if(!r)return;let now=new Date();r.innerHTML=state.timeline.slice(0,120).map(c=>card(c,now>=c.from&&now<c.to)).join('')}
 function refresh(){build();renderCurrent();renderCards()}
-function setMode(m){state.mode=m;if(m==='manual'){$('manualPanel').style.display='block';return}if(m==='fallback'){$('statusText').textContent='Traditional fallback active';$('statusDetails').textContent='06:00 sunrise / 18:00 sunset';refresh()}}
-function useManual(){state.mode='manual';$('statusText').textContent='Manual timing active';$('statusDetails').textContent=`Sunrise ${$('manualSunrise').value} / Sunset ${$('manualSunset').value}`;refresh()}
-function useLocation(){$('statusText').textContent='Requesting location...';$('statusDetails').textContent='Checking GPS';if(!navigator.geolocation){setMode('manual');return}navigator.geolocation.getCurrentPosition(p=>{state.lat=p.coords.latitude;state.lon=p.coords.longitude;state.mode='location';$('manualPanel').style.display='none';refresh();$('statusText').textContent='Local timing active';$('statusDetails').textContent=`Sunrise ${fmt(state.sunrise)} / Sunset ${fmt(state.sunset)}`},e=>{console.warn(e);setMode('fallback')},{enableHighAccuracy:false,timeout:12000,maximumAge:300000})}
+function setMode(m, save=true){
+ state.mode=m;
+ if(m==='manual'){$('manualPanel').style.display='block';showTimingChoices(true);return}
+ if(m==='fallback'){
+   if(save) saveTiming('fallback');
+   showTimingChoices(false);
+   if($('manualPanel')) $('manualPanel').style.display='none';
+   $('statusText').textContent='Traditional fallback active';
+   $('statusDetails').textContent='06:00 sunrise / 18:00 sunset';
+   refresh();
+ }
+}
+function useManual(){
+ state.mode='manual';
+ const sunrise=$('manualSunrise').value||'06:00:00';
+ const sunset=$('manualSunset').value||'18:00:00';
+ saveTiming('manual',{sunrise,sunset});
+ showTimingChoices(false);
+ if($('manualPanel')) $('manualPanel').style.display='none';
+ $('statusText').textContent='Manual timing active';
+ $('statusDetails').textContent=`Sunrise ${sunrise} / Sunset ${sunset}`;
+ refresh();
+}
+function useLocation(){
+ $('statusText').textContent='Requesting location...';
+ $('statusDetails').textContent='Checking GPS';
+ if(!navigator.geolocation){setMode('manual');return}
+ navigator.geolocation.getCurrentPosition(p=>{
+   state.lat=p.coords.latitude;
+   state.lon=p.coords.longitude;
+   state.mode='location';
+   saveTiming('location',{lat:state.lat,lon:state.lon});
+   showTimingChoices(false);
+   if($('manualPanel')) $('manualPanel').style.display='none';
+   refresh();
+   $('statusText').textContent='Local timing active';
+   $('statusDetails').textContent=`Saved location · Sunrise ${fmt(state.sunrise)} / Sunset ${fmt(state.sunset)}`;
+ },e=>{
+   console.warn(e);
+   $('statusText').textContent='Location unavailable';
+   $('statusDetails').textContent='Choose manual timing or traditional fallback.';
+   showTimingChoices(true);
+ },{enableHighAccuracy:false,timeout:12000,maximumAge:300000})
+}
 function renderWeek(phase,id){let root=$(id);if(!root)return;root.innerHTML=DAY_ORDER_TA.map(day=>{let a=adhi(phase,day,'Day');return `<article class="day-card"><div class="day-head"><b>${DAY_EN[day]}</b><span>${day}</span></div><div class="birdpair"><div class="role-card adhi"><div class="emoji">${a.adhi.icon}</div><div class="role">Adhikara</div><div class="bname">${a.adhi.name}</div></div><div class="role-card padu"><div class="emoji">${a.padu.icon}</div><div class="role">Padupatchi</div><div class="bname">${a.padu.name}</div></div></div></article>`}).join('')}
 function mini(r){return `<article class="mini-card ${CLS[r.activity_en]||''}"><div class="bird-img">${r.bird.icon}</div><div class="activity">${r.bird.name} · ${r.activity_en}</div><div class="units">${r.minutes} units</div><div class="lead">${r.activity_ta}</div></article>`}
 function renderTree(phase,id){let root=$(id);if(!root)return;root.innerHTML=DAY_ORDER_TA.map(day=>`<details><summary>${DAY_EN[day]} · ${day}</summary>${['Day','Night'].map(period=>{let rows=APP.cycles[key(phase,period)][day]||[];return `<details><summary>${period}</summary>${[1,2,3,4,5].map(s=>{let items=rows.filter(r=>r.samam_en===`Samam ${s}`);return `<div class="samam"><div class="samam-title"><b>Samam ${s}</b><span>${items.reduce((a,b)=>a+b.minutes,0)} units</span></div><div class="card-row">${items.map(mini).join('')}</div></div>`}).join('')}</details>`}).join('')}</details>`).join('')}
-async function init(){APP=await fetch('data/panchapatchi-data.json').then(r=>r.json());renderWeek('Rising Moon','risingWeek');renderWeek('Waning Moon','waningWeek');renderTree('Rising Moon','risingTree');renderTree('Waning Moon','waningTree');if($('locateBtn'))$('locateBtn').onclick=useLocation;if($('manualBtn'))$('manualBtn').onclick=()=>{$('manualPanel').style.display='block'};if($('fallbackBtn'))$('fallbackBtn').onclick=()=>setMode('fallback');if($('setManualBtn'))$('setManualBtn').onclick=useManual;setMode('fallback');setInterval(()=>{if(APP){build();renderCurrent()}},1000)}
+async function init(){
+ APP=await fetch('data/panchapatchi-data.json').then(r=>r.json());
+ renderWeek('Rising Moon','risingWeek');
+ renderWeek('Waning Moon','waningWeek');
+ renderTree('Rising Moon','risingTree');
+ renderTree('Waning Moon','waningTree');
+
+ if($('locateBtn')) $('locateBtn').onclick=useLocation;
+ if($('manualBtn')) $('manualBtn').onclick=()=>{$('manualPanel').style.display='block'};
+ if($('fallbackBtn')) $('fallbackBtn').onclick=()=>setMode('fallback');
+ if($('setManualBtn')) $('setManualBtn').onclick=useManual;
+ if($('changeTimingBtn')) $('changeTimingBtn').onclick=()=>{
+   clearSavedTiming();
+   showTimingChoices(true);
+   if($('manualPanel')) $('manualPanel').style.display='none';
+   $('statusText').textContent='Choose timing method';
+   $('statusDetails').textContent='Use location, manual sunrise/sunset, or traditional 6am/6pm.';
+ };
+
+ const saved=loadSavedTiming();
+ if(saved && saved.mode==='location' && typeof saved.lat==='number' && typeof saved.lon==='number'){
+   state.mode='location'; state.lat=saved.lat; state.lon=saved.lon;
+   showTimingChoices(false); refresh();
+   $('statusText').textContent='Local timing active';
+   $('statusDetails').textContent=`Saved location · Sunrise ${fmt(state.sunrise)} / Sunset ${fmt(state.sunset)}`;
+ }else if(saved && saved.mode==='manual'){
+   if($('manualSunrise')) $('manualSunrise').value=saved.sunrise||'06:00:00';
+   if($('manualSunset')) $('manualSunset').value=saved.sunset||'18:00:00';
+   state.mode='manual'; showTimingChoices(false); refresh();
+   $('statusText').textContent='Manual timing active';
+   $('statusDetails').textContent=`Saved manual timing · Sunrise ${$('manualSunrise').value} / Sunset ${$('manualSunset').value}`;
+ }else if(saved && saved.mode==='fallback'){
+   setMode('fallback', false);
+ }else{
+   showTimingChoices(true);
+   setMode('fallback', false);
+   showTimingChoices(true);
+   $('statusText').textContent='Choose timing method';
+   $('statusDetails').textContent='Use location for local timing, or choose another method.';
+ }
+ setInterval(()=>{if(APP){build();renderCurrent()}},1000)
+}
 init();
