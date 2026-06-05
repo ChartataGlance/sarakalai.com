@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>Panchapatchi Tree App</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div id="geoModal" class="modal">
+  <div class="modal-card">
+    <div style="font-size:46px">📍</div>
+    <h2>Allow location for accurate Panchapatchi timing</h2>
+    <p>This app uses your location to calculate local sunrise. Then it uses a fixed <b>12 hour day</b> and <b>12 hour night</b> cycle.</p>
+    <button class="primary" id="allowBtn" type="button">Use My Location</button>
+    <button id="skipBtn" type="button">View Tree First</button>
+    <button id="closePopupBtn" type="button" style="float:right;margin-top:8px">Close Popup</button>
+    <div id="geoError" class="err"></div>
+    <p class="notice">Location is used only in your browser. It is not stored or sent anywhere.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>பஞ்ச பட்சி · Panchapatchi Tree App</h1>
+      <p class="lead">Current bird, live countdown, inner 5-part activity, Adhikara/Padupatchi, and full phase tree. Local-folder ready: no fetch needed.</p>
+    </div>
+    <div class="status"><b id="geoStatus">Location not enabled</b><span id="geoDetails">Tap “Use My Location” for accurate timing.</span></div>
+  </div>
+
+  <section class="current" id="currentBox">
+    <div class="current-grid">
+      <div class="current-icon" id="currentIcon">🕊️</div>
+      <div>
+        <div class="current-title" id="currentTitle">Waiting for accurate timing</div>
+        <div class="current-path" id="currentPath">Enable location to see current bird, activity and countdown.</div>
+        <div class="big-count" id="countdownText">--:--:--</div>
+      </div>
+    </div>
+    <div class="progress"><div class="bar" id="activityBar"></div></div>
+    <div class="micro-grid" id="microGrid">
+      <div class="micro">1<small>--</small></div><div class="micro">2<small>--</small></div><div class="micro">3<small>--</small></div><div class="micro">4<small>--</small></div><div class="micro">5<small>--</small></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>Sunrise</b><span id="sunriseText">--</span></div>
+      <div class="stat"><b>Moon</b><span id="moonText">--</span></div>
+      <div class="stat"><b>Period</b><span id="periodText">--</span></div>
+      <div class="stat"><b>Inner Part</b><span id="innerText">--</span></div>
+    </div>
+    <div class="controls">
+      <button class="primary" id="locateBtn">Use My Location</button>
+      <a class="btn" href="#phaseWeek">Rising/Waning Week Cards</a>
+      <a class="btn" href="#phaseTree">Day/Night Tree</a>
+      <a class="btn" href="#activeTree">Active Tree</a>
+    </div>
+  </section>
+
+
+  <section id="phaseWeek">
+    <div class="section-head" style="border:1px solid var(--line);border-radius:22px;margin-top:18px">
+      <h2>Start Here: Rising Moon 7 Days / Waning Moon 7 Days</h2>
+      <span class="badge">Adhikara + Padu on every weekday card</span>
+    </div>
+    <div id="phaseWeekRoot"></div>
+  </section>
+
+  <section id="phaseTree">
+    <div class="section-head" style="border:1px solid var(--line);border-radius:22px;margin-top:18px">
+      <h2>Phase → Weekday → Day/Night → Samam Tree</h2>
+      <span class="badge">Each Samam contains 5 activity cards</span>
+    </div>
+    <div id="phaseDayNightRoot"></div>
+  </section>
+
+  <section class="section" id="activeTree">
+    <div class="section-head"><h2>Active Day Tree</h2><span class="badge">Moon → Day → Samam → Activity</span></div>
+    <div id="activeTreeRoot"></div>
+  </section>
+
+  <section class="section" id="adhikara">
+    <div class="section-head"><h2>Reference: Daily Adhikara & Padupatchi</h2><span class="badge">Large bird cards</span></div>
+    <div id="adhikaraRoot"></div>
+  </section>
+
+  <section class="section" id="fullTree">
+    <div class="section-head"><h2>Reference: Full Raw Tree</h2><span class="badge">4 cycles × 7 days × 5 Samam × 5 cards</span></div>
+    <div class="tree" id="fullTreeRoot"></div>
+  </section>
+</div>
+
+<script>
+(function(){
+  function closeGeoPopup(){
+    var modal = document.getElementById('geoModal');
+    if(modal) modal.classList.add('hide');
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    var skip = document.getElementById('skipBtn');
+    var close = document.getElementById('closePopupBtn');
+    var modal = document.getElementById('geoModal');
+    if(skip) skip.addEventListener('click', closeGeoPopup);
+    if(close) close.addEventListener('click', closeGeoPopup);
+    if(modal) modal.addEventListener('click', function(e){
+      if(e.target === modal) closeGeoPopup();
+    });
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') closeGeoPopup();
+    });
+  });
+})();
+</script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
