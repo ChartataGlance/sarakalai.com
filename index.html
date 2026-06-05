@@ -44,9 +44,9 @@ button,.btn{background:#122342;color:#eaf2ff;border:1px solid #2d4774;padding:10
   <div class="top">
     <div>
       <h1>பஞ்ச பட்சி · Panchapatchi Tree App</h1>
-      <p class="lead">Timing starts immediately. Use location to refine sunrise.</p>
+      <p class="lead">Local sunrise required for accurate Panchapatchi timing.</p>
     </div>
-    <div class="status"><b id="geoStatus">Timing starting...</b><span id="geoDetails">Default 06:00 sunrise first.</span></div>
+    <div class="status"><b id="geoStatus">Timing starting...</b><span id="geoDetails">Tap Use My Location to calculate local sunrise.</span></div>
   </div>
 
   <section class="current active" id="currentBox">
@@ -54,7 +54,7 @@ button,.btn{background:#122342;color:#eaf2ff;border:1px solid #2d4774;padding:10
       <div class="current-icon" id="currentIcon">🕊️</div>
       <div>
         <div class="current-title" id="currentTitle">Loading timing...</div>
-        <div class="current-path" id="currentPath">Timing starts without waiting for location.</div>
+        <div class="current-path" id="currentPath">Use location to calculate accurate local sunrise.</div>
         <div class="big-count" id="countdownText">--:--:--</div>
       </div>
     </div>
@@ -67,7 +67,7 @@ button,.btn{background:#122342;color:#eaf2ff;border:1px solid #2d4774;padding:10
       <div class="stat"><b>Inner Part</b><span id="innerText">--</span></div>
     </div>
     <div class="controls">
-      <button class="primary" id="locateBtn" type="button">Use My Location</button>
+      <button class="primary" id="locateBtn" type="button">Use My Location</button><button class="btn" id="manualBtn" type="button">Manual Sunrise</button>
       <a class="btn" href="#phaseWeek">Rising/Waning Week Cards</a>
       <a class="btn" href="#phaseTree">Day/Night Tree</a>
       <a class="btn" href="#activeTree">Active Tree</a>
@@ -124,9 +124,63 @@ function renderPhaseWeekdays(){const root=$('phaseWeekRoot');root.innerHTML=['Ri
 function samamTreeHTML(phase,day,period){const key=datasetKey(phase,period),rows=APP.rows.filter(r=>r.dataset===key&&r.day_ta===day);return[1,2,3,4,5].map(s=>{const items=rows.filter(r=>r.samam_en===`Samam ${s}`),total=items.reduce((a,b)=>a+b.minutes,0);return`<details><summary>Samam ${s} · ${total} min</summary><div class="card-row" style="padding:12px">${items.map((r,i)=>`<div>${cardHTML({...r,index:i+1})}${innerPartsHTML(r.minutes)}</div>`).join('')}</div></details>`}).join('')}
 function renderPhaseDayNightTree(){const root=$('phaseDayNightRoot');root.innerHTML=['Rising Moon','Waning Moon'].map(phase=>`<section class="section"><div class="section-head"><h2>${phase} · Weekday Trees</h2><span class="badge">Day/Night → Samam → Activities → Inner 5</span></div><div class="phase-detail">${DAY_ORDER_TA.map(day=>{const id=`${phase.replace(' Moon','').toLowerCase()}-${day}`;const ad=findAdhikara(phase,day,'Day');const adhi=ad?ad.adhikara:{icon:'❔',name:'Unknown'},padu=ad?ad.padu:{icon:'❔',name:'Unknown'};return`<details id="${id}"><summary>${DAY_EN[day]} · ${day} · ${adhi.icon} Adhikara ${adhi.name} · ${padu.icon} Padu ${padu.name}</summary><details open><summary>☀️ Day / பகல்</summary>${samamTreeHTML(phase,day,'Day')}</details><details><summary>🌙 Night / இரவு</summary>${samamTreeHTML(phase,day,'Night')}</details></details>`}).join('')}</div></section>`).join('')}
 function renderActiveTree(){const root=$('activeTreeRoot'),rows=addTimes(rowsForCurrentCycle()),mp=moonPhase(),period=currentPeriod(state.sunrise),day=dayTaNow();root.innerHTML=`<div class="samam"><b>${mp.phase} → ${DAY_EN[day]} → ${period}</b></div>`;for(let s=1;s<=5;s++){const items=rows.filter(r=>r.samam_en===`Samam ${s}`),total=items.reduce((a,b)=>a+b.minutes,0);root.innerHTML+=`<div class="samam"><div class="samam-title"><b>Samam ${s}</b><span>${total} min total</span></div><div class="card-row">${items.map((r,i)=>cardHTML({...r,index:i+1},state.current&&r.from.getTime()===state.current.from.getTime(),true)).join('')}</div></div>`}}
-function startTiming(sr,source){state.sunrise=sr;$('geoStatus').textContent='Timing active';$('geoDetails').textContent=source;updateCurrent();if(!window._timer)window._timer=setInterval(updateCurrent,1000)}
-function useLocation(){$('geoStatus').textContent='Requesting location...';$('geoDetails').textContent='Timing continues while checking GPS.';if(!navigator.geolocation){$('geoDetails').textContent='Geolocation not supported. Default timing active.';return}navigator.geolocation.getCurrentPosition(pos=>{const sr=approxSunrise(pos.coords.latitude,pos.coords.longitude);startTiming(sr,`Location sunrise ${fmt(sr)}`) },err=>{$('geoStatus').textContent='Timing active';$('geoDetails').textContent='Location failed or timed out. Default timing still running.';console.warn(err)},{enableHighAccuracy:false,timeout:8000,maximumAge:300000})}
-function init(){renderPhaseWeekdays();renderPhaseDayNightTree();startTiming(defaultSunrise(),'Default sunrise 06:00 · tap Use My Location to refine');$('locateBtn').addEventListener('click',useLocation);}
+function startTiming(sr,source){
+  state.sunrise=sr;
+  $('geoStatus').textContent='Local timing active';
+  $('geoDetails').textContent=source;
+  updateCurrent();
+  if(!window._timer)window._timer=setInterval(updateCurrent,1000)
+}
+function useLocation(){
+  $('geoStatus').textContent='Requesting location...';
+  $('geoDetails').textContent='Please allow location to calculate local sunrise.';
+  if(!navigator.geolocation){
+    $('geoStatus').textContent='Location unavailable';
+    $('geoDetails').textContent='Browser does not support geolocation. Enter sunrise manually.';
+    $('manualPanel').style.display='block';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      const sr=approxSunrise(pos.coords.latitude,pos.coords.longitude);
+      startTiming(sr,`Local sunrise ${fmt(sr)} · fixed 12hr day/night`);
+      $('manualPanel').style.display='none';
+    },
+    err=>{
+      $('geoStatus').textContent='Location failed';
+      $('geoDetails').textContent='Allow location or enter sunrise manually.';
+      $('manualPanel').style.display='block';
+      console.warn(err);
+    },
+    {enableHighAccuracy:false,timeout:12000,maximumAge:300000}
+  );
+}
+function setManualSunrise(){
+  const val=$('manualSunrise').value || '06:00:00';
+  const parts=val.split(':').map(Number);
+  const d=new Date();
+  const sr=new Date(d.getFullYear(),d.getMonth(),d.getDate(),parts[0]||6,parts[1]||0,parts[2]||0);
+  startTiming(sr,`Manual local sunrise ${fmt(sr)} · fixed 12hr day/night`);
+}
+function init(){
+  renderPhaseWeekdays();
+  renderPhaseDayNightTree();
+  $('locateBtn').addEventListener('click',useLocation);
+  $('manualBtn').addEventListener('click',()=>{$('manualPanel').style.display='block'});
+  $('setManualSunrise').addEventListener('click',setManualSunrise);
+
+  $('currentTitle').textContent='Local sunrise needed';
+  $('currentPath').textContent='Tap Use My Location to calculate accurate local sunrise. No default timing is used.';
+  $('countdownText').textContent='--:--:--';
+  $('geoStatus').textContent='Location required';
+  $('geoDetails').textContent='Timing will start only after local sunrise is known.';
+
+  if(navigator.permissions && navigator.permissions.query){
+    navigator.permissions.query({name:'geolocation'}).then(r=>{
+      if(r.state==='granted') useLocation();
+    }).catch(()=>{});
+  }
+}
 init();
 </script>
 </body>
