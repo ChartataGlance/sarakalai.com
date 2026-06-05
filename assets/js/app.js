@@ -246,9 +246,36 @@ function applyLocation(sr){
   if(!window._timer) window._timer=setInterval(updateCurrent,1000);
 }
 function requestGeo(){
-  const err=$('geoError'); err.textContent='';
-  if(!navigator.geolocation){err.textContent='Geolocation is not supported.';return;}
-  navigator.geolocation.getCurrentPosition(pos=>applyLocation(approxSunrise(pos.coords.latitude,pos.coords.longitude)),()=>{err.textContent='Location permission needed for accurate timing.';},{enableHighAccuracy:true,timeout:10000,maximumAge:0});
+  const err=$('geoError');
+  if(err) err.textContent='';
+  const status=$('geoStatus'), details=$('geoDetails');
+  if(status) status.textContent='Requesting location...';
+  if(details) details.textContent='Browser location permission is being checked.';
+
+  if(!navigator.geolocation){
+    if(err) err.textContent='Geolocation is not supported by this browser.';
+    if(status) status.textContent='Location not supported';
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      if(status) status.textContent='Location received';
+      if(details) details.textContent=`Lat ${pos.coords.latitude.toFixed(4)}, Lon ${pos.coords.longitude.toFixed(4)}`;
+      applyLocation(approxSunrise(pos.coords.latitude,pos.coords.longitude));
+    },
+    error=>{
+      let msg='Location permission needed for accurate timing.';
+      if(error.code===1) msg='Location permission denied. Allow location for this site in browser settings.';
+      if(error.code===2) msg='Location unavailable. Try refreshing or checking device location service.';
+      if(error.code===3) msg='Location request timed out. Try again.';
+      if(err) err.textContent=msg;
+      if(status) status.textContent='Location failed';
+      if(details) details.textContent=msg;
+      console.warn('Geolocation error:', error);
+    },
+    {enableHighAccuracy:false,timeout:20000,maximumAge:300000}
+  );
 }
 async function init(){
   const safeClose = () => { const m=$('geoModal'); if(m) m.classList.add('hide'); };
@@ -266,6 +293,23 @@ async function init(){
   const active=$('activeTreeRoot');
   if(active && !state.sunrise){
     active.innerHTML = '<div class="samam"><b>Location not enabled yet.</b><p class="lead">Click “Use My Location” for active live tree, or open the Full Tree below.</p></div>';
+  }
+
+  // Auto-start timing if the browser already has location permission for this site.
+  if(navigator.permissions && navigator.permissions.query){
+    navigator.permissions.query({name:'geolocation'}).then(result=>{
+      if(result.state === 'granted'){
+        requestGeo();
+      }else if(result.state === 'prompt'){
+        const status=$('geoStatus'), details=$('geoDetails');
+        if(status) status.textContent='Location ready';
+        if(details) details.textContent='Click “Use My Location” to start accurate timing.';
+      }else if(result.state === 'denied'){
+        const status=$('geoStatus'), details=$('geoDetails');
+        if(status) status.textContent='Location blocked';
+        if(details) details.textContent='Allow location in browser settings, then refresh.';
+      }
+    }).catch(()=>{});
   }
 }
 init();
