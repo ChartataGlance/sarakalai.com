@@ -1,3 +1,3 @@
-# Sarakalai Panchapatchi v022
+Sarakalai Panchapatchi v026
 
-Single-file timing app. Upload index.html and CNAME to GitHub Pages.
+Front page timing app. Adhikara/Padu weekday cards moved to adhikara.html.
