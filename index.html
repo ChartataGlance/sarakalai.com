@@ -14,7 +14,7 @@
   <div class="modal-card">
     <div style="font-size:46px">📍</div>
     <h2>Allow location for accurate Panchapatchi timing</h2>
-    <p>This app uses your location to calculate local sunrise. Then it uses a fixed <b>12 hour day</b> and <b>12 hour night</b> cycle.</p>
+    <p>Timing starts immediately using a default 06:00 sunrise. Allow location to calculate your accurate local sunrise, then the app uses a fixed <b>12 hour day</b> and <b>12 hour night</b> cycle.</p>
     <button class="primary" id="allowBtn" type="button">Use My Location</button>
     <button id="skipBtn" type="button">View Tree First</button>
     <button id="closePopupBtn" type="button" style="float:right;margin-top:8px">Close Popup</button>
@@ -29,15 +29,15 @@
       <h1>பஞ்ச பட்சி · Panchapatchi Tree App</h1>
       <p class="lead">Current bird, live countdown, inner 5-part activity, Adhikara/Padupatchi, and full phase tree. Local-folder ready: no fetch needed.</p>
     </div>
-    <div class="status"><b id="geoStatus">Location not enabled</b><span id="geoDetails">Tap “Use My Location” for accurate timing.</span></div>
+    <div class="status"><b id="geoStatus">Location not enabled</b><span id="geoDetails">Timing starts with default 06:00 sunrise; tap Use My Location for accurate local sunrise.</span></div>
   </div>
 
   <section class="current" id="currentBox">
     <div class="current-grid">
       <div class="current-icon" id="currentIcon">🕊️</div>
       <div>
-        <div class="current-title" id="currentTitle">Waiting for accurate timing</div>
-        <div class="current-path" id="currentPath">Enable location to see current bird, activity and countdown.</div>
+        <div class="current-title" id="currentTitle">Timing loading...</div>
+        <div class="current-path" id="currentPath">Timing starts immediately. Tap Use My Location for accurate local sunrise.</div>
         <div class="big-count" id="countdownText">--:--:--</div>
       </div>
     </div>

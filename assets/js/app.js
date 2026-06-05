@@ -239,42 +239,68 @@ function renderPhaseDayNightTree(){
 
 function applyLocation(sr){
   state.sunrise=sr;
-  $('geoModal').classList.add('hide');
-  $('geoStatus').textContent='Location enabled';
-  $('geoDetails').textContent=`Sunrise ${fmt(sr)} · fixed 12hr day/night`;
+  const modal=$('geoModal');
+  if(modal) modal.classList.add('hide');
+  const status=$('geoStatus'), details=$('geoDetails');
+  if(status) status.textContent='Timing active';
+  if(details) details.textContent=`Sunrise ${fmt(sr)} · fixed 12hr day/night`;
   updateCurrent();
   if(!window._timer) window._timer=setInterval(updateCurrent,1000);
 }
+
+function fallbackSunrise(){
+  const d = new Date();
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 6, 0, 0);
+}
+function startFallbackTiming(reason='Default 06:00 timing active'){
+  if(!state.sunrise){
+    applyLocation(fallbackSunrise());
+    const status=$('geoStatus'), details=$('geoDetails');
+    if(status) status.textContent='Timing active';
+    if(details) details.textContent=reason + ' · tap Use My Location to refine.';
+  }
+}
+
 function requestGeo(){
   const err=$('geoError');
   if(err) err.textContent='';
   const status=$('geoStatus'), details=$('geoDetails');
+
+  // Start immediately with fixed 06:00 fallback so the app is never blank.
+  startFallbackTiming('Temporary timing active');
+
   if(status) status.textContent='Requesting location...';
-  if(details) details.textContent='Browser location permission is being checked.';
+  if(details) details.textContent='Timing is running. Checking location for accurate sunrise.';
 
   if(!navigator.geolocation){
-    if(err) err.textContent='Geolocation is not supported by this browser.';
-    if(status) status.textContent='Location not supported';
+    if(err) err.textContent='Geolocation is not supported. Using default 06:00 sunrise.';
+    if(status) status.textContent='Timing active';
+    if(details) details.textContent='Default 06:00 sunrise · geolocation not supported.';
     return;
   }
 
   navigator.geolocation.getCurrentPosition(
     pos=>{
-      if(status) status.textContent='Location received';
-      if(details) details.textContent=`Lat ${pos.coords.latitude.toFixed(4)}, Lon ${pos.coords.longitude.toFixed(4)}`;
-      applyLocation(approxSunrise(pos.coords.latitude,pos.coords.longitude));
+      const sr = approxSunrise(pos.coords.latitude,pos.coords.longitude);
+      state.sunrise = sr;
+      if(status) status.textContent='Location timing active';
+      if(details) details.textContent=`Sunrise ${fmt(sr)} · Lat ${pos.coords.latitude.toFixed(4)}, Lon ${pos.coords.longitude.toFixed(4)}`;
+      updateCurrent();
+      if(!window._timer) window._timer=setInterval(updateCurrent,1000);
+      const m=$('geoModal'); if(m) m.classList.add('hide');
     },
     error=>{
-      let msg='Location permission needed for accurate timing.';
-      if(error.code===1) msg='Location permission denied. Allow location for this site in browser settings.';
-      if(error.code===2) msg='Location unavailable. Try refreshing or checking device location service.';
-      if(error.code===3) msg='Location request timed out. Try again.';
+      let msg='Using default 06:00 sunrise. Location failed.';
+      if(error.code===1) msg='Using default 06:00 sunrise. Location permission denied.';
+      if(error.code===2) msg='Using default 06:00 sunrise. Location unavailable.';
+      if(error.code===3) msg='Using default 06:00 sunrise. Location request timed out.';
       if(err) err.textContent=msg;
-      if(status) status.textContent='Location failed';
+      if(status) status.textContent='Timing active';
       if(details) details.textContent=msg;
       console.warn('Geolocation error:', error);
+      const m=$('geoModal'); if(m) m.classList.add('hide');
     },
-    {enableHighAccuracy:false,timeout:20000,maximumAge:300000}
+    {enableHighAccuracy:false,timeout:8000,maximumAge:300000}
   );
 }
 async function init(){
@@ -311,5 +337,8 @@ async function init(){
       }
     }).catch(()=>{});
   }
+
+  // Start live timing immediately so desktop/mobile never stays blank.
+  startFallbackTiming('Default 06:00 timing active');
 }
 init();
