@@ -20,7 +20,7 @@ function showTimingChoices(show){
   if(choices) choices.style.display=show?'flex':'none';
   if(saved) saved.style.display=show?'none':'flex';
 }
-function pad(n){return String(n).padStart(2,'0')}function fmt(d){return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`}function hms(ms){const s=Math.max(0,Math.round(ms/1000)),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=s%60;return `${pad(h)}:${pad(m)}:${pad(x)}`}function addDays(d,n){let x=new Date(d);x.setDate(x.getDate()+n);return x}function dayTa(d){return DAY_ORDER_TA[d.getDay()]}function fmtDate(d){return d.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'})}
+function pad(n){return String(n).padStart(2,'0')}function fmt(d){return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`}function hms(ms){const s=Math.max(0,Math.round(ms/1000)),h=Math.floor(s/3600),m=Math.floor((s%3600)/60),x=s%60;return `${pad(h)}:${pad(m)}:${pad(x)}`}function mmss(ms){const s=Math.max(0,Math.round(ms/1000)),m=Math.floor(s/60),x=s%60;return `${pad(m)}:${pad(x)}`}function addDays(d,n){let x=new Date(d);x.setDate(x.getDate()+n);return x}function dayTa(d){return DAY_ORDER_TA[d.getDay()]}function fmtDate(d){return d.toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'})}
 function moonInfo(date=new Date()){
  const syn=29.530588853,new0=Date.UTC(2000,0,6,18,14,0);
  let age=((date-new0)/86400000)%syn;if(age<0)age+=syn;
@@ -37,39 +37,51 @@ function getSun(date,rise){if(state.mode==='location')return sunEvent(date,state
 function adhi(phase,day,period){let rows=APP.cycles[key(phase,period)][day]||[];return{adhi:rows[0]?.bird||{icon:'❔',name:'Unknown'},padu:rows[1]?.bird||{icon:'❔',name:'Unknown'}}}
 function build(){const now=new Date(),end=new Date(now.getTime()+7*864e5),all=[];for(let i=-1;i<=8;i++){let d=addDays(now,i),nd=addDays(d,1),sr=getSun(d,true),ss=getSun(d,false),nsr=getSun(nd,true);if(i===0){state.sunrise=sr;state.sunset=ss}for(const [period,start,finish] of [['Day',sr,ss],['Night',ss,nsr]]){let mp=moonInfo(start),k=key(mp.phase,period),dt=dayTa(start),rows=APP.cycles[k][dt]||[],a=adhi(mp.phase,dt,period),samMs=(finish-start)/5;for(let s=1;s<=5;s++){let s0=new Date(start.getTime()+samMs*(s-1)),s1=new Date(start.getTime()+samMs*s),cur=s0;rows.filter(r=>r.samam_en===`Samam ${s}`).forEach((r,idx)=>{let dur=samMs*r.minutes/144,from=new Date(cur),to=new Date(cur.getTime()+dur);all.push({...r,index:idx+1,from,to,duration:dur,phase:mp.phase,moonDeg:mp.deg,moonBlock:mp.block,tithiIndex:mp.tithiIndex,tithi:mp.tithi,siderealDeg:mp.siderealDeg,nakTamil:mp.nakTamil,nakEnglish:mp.nakEnglish,pada:mp.pada,lord:mp.lord,rasiTamil:mp.rasiTamil,rasiEnglish:mp.rasiEnglish,period,dayTa:dt,dayEn:DAY_EN[dt],samam:s,adhi:a.adhi,padu:a.padu});cur=to})}}}state.timeline=all.filter(c=>c.to>now&&c.from<end).sort((a,b)=>a.from-b.from);state.current=state.timeline.find(c=>now>=c.from&&now<c.to)||state.timeline[0]}
 function renderMoon(){
- let root=$('moonWheel'),c=state.current;if(!root||!c)return;
- const risingItems=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
- const waningItems=[15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
- const item=(i)=>{
-   let label=i===0?'0°':(i===15?'180°':(i===30?'360°':i));
-   let active=i===c.tithiIndex;
-   let emoji=i===0||i===30?'🌑':(i===15?'🌕':(i<15?'🌔':'🌘'));
-   return `<div class="tithi-item ${active?'active':''}"><span class="emoji">${emoji}</span>${label}</div>`;
- };
- root.innerHTML=`<div class="moon-card-detail">
-   <div class="moon-center" style="position:static;transform:none;margin-bottom:8px">
-     <div class="moon">${c.phase==='Rising Moon'?'🌔':'🌘'}</div>
-     <b>${c.phase==='Rising Moon'?'வளர்பிறை':'தேய்பிறை'}</b>
-     <span class="lead">${c.tithi}</span>
-   </div>
-   <div class="tithi-track">
-     <div class="tithi-row top" style="direction:rtl">${risingItems.map(item).join('')}</div>
-     <div class="tithi-line-label top-label">0° right → 180° left · சுக்ல / வளர்பிறை</div>
-     <div class="tithi-line-label bottom-label">180° left → 360° right · கிருஷ்ண / தேய்பிறை</div>
-     <div class="tithi-row bottom">${waningItems.map(item).join('')}</div>
-   </div>
-   <div class="moon-detail-grid">
-    <div><small>திதி</small><b>${c.tithi}</b></div>
-    <div><small>Moon Degree</small><b>${c.moonDeg.toFixed(2)}°</b></div>
-    <div><small>ராசி</small><b>${c.rasiTamil} / ${c.rasiEnglish}</b></div>
-    <div><small>நட்சத்திரம்</small><b>${c.nakTamil} / ${c.nakEnglish}</b></div>
-    <div><small>பாதம்</small><b>${c.pada}</b></div>
-    <div><small>Star Lord</small><b>${c.lord}</b></div>
-   </div>
- </div>`;
+ const c=state.current;if(!c)return;
+ if($('moonPhaseTitle')) $('moonPhaseTitle').textContent=c.phase==='Rising Moon'?'வளர்பிறை':'தேய்பிறை';
+ if($('tithiTitle')) $('tithiTitle').textContent=c.tithi || '--';
+ if($('rasiText')) $('rasiText').textContent=`${c.rasiTamil} / ${c.rasiEnglish}`;
+ if($('nakText')) $('nakText').textContent=`${c.nakTamil} / ${c.nakEnglish}`;
+ if($('padaText')) $('padaText').textContent=c.pada;
+ if($('lordText')) $('lordText').textContent=c.lord;
+ const strip=$('tithiStrip');
+ if(strip){
+   const start=c.phase==='Rising Moon'?0:15, end=c.phase==='Rising Moon'?15:30;
+   let html=`<span class="tithi-end">${start===0?'0°':'180°'}</span>`;
+   for(let i=start;i<=end;i++){
+     const active=i===c.tithiIndex, emoji=i===0||i===30?'🌑':(i===15?'🌕':(i<15?'🌔':'🌘'));
+     html+=`<span class="tithi-dot ${active?'active':''}" title="${TITHI[i]||''}">${active?'🟡':emoji}</span>`;
+   }
+   html+=`<span class="tithi-end">${end===15?'180°':'360°'}</span>`;
+   strip.innerHTML=html;
+ }
+ if($('tithiCaption')) $('tithiCaption').textContent=c.phase==='Rising Moon'?'0° right → 180° left · சுக்ல / வளர்பிறை':'180° left → 360° right · கிருஷ்ண / தேய்பிறை';
 }
-function renderMicro(c){let g=$('microGrid');if(!g||!c)return;let now=new Date(),part=c.duration/5,act=Math.min(4,Math.max(0,Math.floor((now-c.from)/part)));g.innerHTML='';for(let i=0;i<5;i++){let f=new Date(c.from.getTime()+part*i),t=new Date(c.from.getTime()+part*(i+1));g.innerHTML+=`<div class="micro ${i===act?'active':''}">Inner ${i+1}<small>${fmt(f)} → ${fmt(t)}</small></div>`}$('innerText').textContent=`${act+1}/5`}
-function renderCurrent(){let c=state.current;if(!c)return;let now=new Date(),remain=c.to-now,prog=((now-c.from)/c.duration)*100;$('currentIcon').textContent=c.bird.icon;$('currentTitle').textContent=`${c.bird.name} · ${c.activity_en}`;$('currentPath').textContent=`${c.phase==='Rising Moon'?'வளர்பிறை':'தேய்பிறை'} · ${c.tithi} → ${c.dayEn} → ${c.period} → Samam ${c.samam}`;$('countdownText').textContent=`${hms(remain)} remaining`;$('activityBar').style.width=`${Math.min(100,Math.max(0,prog))}%`;$('sunText').textContent=`${fmt(state.sunrise)} / ${fmt(state.sunset)}`;$('moonText').textContent=`${c.tithi}`;$('periodText').textContent=c.period;renderMicro(c);renderMoon()}
+function renderMicro(c){
+ if(!c)return;
+ const now=new Date(),part=c.duration/5,act=Math.min(4,Math.max(0,Math.floor((now-c.from)/part)));
+ const dots=$('innerDots');
+ if(dots){dots.innerHTML='';for(let i=0;i<5;i++){const d=document.createElement('span');d.className='inner-dot '+(i<act?'done':(i===act?'active':''));dots.appendChild(d)}}
+ if($('innerText')) $('innerText').textContent=`Inner Part ${act+1} / 5`;
+}
+function renderCurrent(){
+ let c=state.current;if(!c)return;
+ let now=new Date(),remain=c.to-now,prog=Math.min(100,Math.max(0,((now-c.from)/c.duration)*100));
+ if($('currentIcon')) $('currentIcon').textContent=c.bird.icon;
+ if($('currentTitle')) $('currentTitle').textContent=`${c.bird.name} • ${c.activity_ta || c.activity_en}`;
+ if($('countdownText')) $('countdownText').textContent=`${mmss(remain)} remaining`;
+ if($('activityDurationText')) $('activityDurationText').textContent=`${mmss(c.duration)} total · ${fmt(c.from)} → ${fmt(c.to)}`;
+ if($('activityBar')) $('activityBar').style.width=`${prog}%`;
+ if($('activityPercentText')) $('activityPercentText').textContent=`${Math.round(prog)}% complete`;
+ if($('sunText')) $('sunText').textContent=`${fmt(state.sunrise)} / ${fmt(state.sunset)}`;
+ if($('periodText')) $('periodText').textContent=c.period;
+ if($('samamText')) $('samamText').textContent=`Samam ${c.samam}`;
+ if($('currentPath')) $('currentPath').textContent=`${fmt(c.from)} → ${fmt(c.to)}`;
+ if($('todayText')) $('todayText').textContent=`${c.dayTa} / ${c.dayEn}`;
+ if($('adhiText')) $('adhiText').textContent=`${c.adhi.icon} ${c.adhi.name}`;
+ if($('paduText')) $('paduText').textContent=`${c.padu.icon} ${c.padu.name}`;
+ renderMicro(c);renderMoon();
+}
 function card(c,active=false){return `<article class="timeline-card ${active?'active':''}"><div class="topline"><span>${fmtDate(c.from)} · ${c.phase==='Rising Moon'?'வளர்பிறை':'தேய்பிறை'} · ${c.tithi}</span><span>${c.period} · Samam ${c.samam}</span></div><div class="body"><div class="birdbig">${c.bird.icon}</div><div><div class="name">${c.bird.name} · ${c.activity_en}</div><div class="time">${fmt(c.from)} → ${fmt(c.to)} · ${hms(c.duration)}</div></div></div><div class="context"><div><small>Adhikara</small><b>${c.adhi.icon} ${c.adhi.name}</b></div><div><small>Padupatchi</small><b>${c.padu.icon} ${c.padu.name}</b></div><div><small>Units</small><b>${c.minutes}/144</b></div><div><small>Inner</small><b>${hms(c.duration/5)}</b></div></div></article>`}
 function renderCards(){let r=$('cardList');if(!r)return;let now=new Date();r.innerHTML=state.timeline.slice(0,120).map(c=>card(c,now>=c.from&&now<c.to)).join('')}
 function refresh(){build();renderCurrent();renderCards()}
