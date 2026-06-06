@@ -110,7 +110,7 @@ function renderCurrent(){
  let c=state.current;if(!c)return;
  let now=new Date(),remain=c.to-now,prog=Math.min(100,Math.max(0,((now-c.from)/c.duration)*100));
  if($('currentTitle')) $('currentTitle').textContent=`${c.bird.icon} ${c.bird.name} • ${c.activity_ta || c.activity_en}`;
- if($('countdownText')) $('countdownText').textContent=`⏳ ${mmss(remain)} remaining`;
+ if($('countdownText')) $('countdownText').textContent=`⏳ ${mmss(remain)}`;
  if($('activityDurationText')) $('activityDurationText').textContent=`${mmss(c.duration)} total · ${fmt(c.from)} → ${fmt(c.to)}`;
  if($('activityBar')) $('activityBar').style.width=`0%`;
  if($('activityPercentText')) $('activityPercentText').textContent=`${Math.round(prog)}% complete`;
@@ -123,7 +123,7 @@ function renderCurrent(){
  if($('paduEmoji')) $('paduEmoji').textContent=c.padu.icon;
  if($('adhiText')) $('adhiText').textContent=c.adhi.name;
  if($('paduText')) $('paduText').textContent=c.padu.name;
- renderSamamDots(c);renderMicro(c);renderTwelveParts(c);renderMoon();
+ renderSamamDots(c);renderTwelveParts(c);renderMoon();
 }
 function card(c,active=false){return `<article class="timeline-card ${active?'active':''}"><div class="topline"><span>${fmtDate(c.from)} · ${c.phase==='Rising Moon'?'வளர்பிறை':'தேய்பிறை'} · ${c.tithi}</span><span>${c.period} · Samam ${c.samam}</span></div><div class="body"><div class="birdbig">${c.bird.icon}</div><div><div class="name">${c.bird.name} · ${c.activity_en}</div><div class="time">${fmt(c.from)} → ${fmt(c.to)} · ${hms(c.duration)}</div></div></div><div class="context"><div><small>Adhikara</small><b>${c.adhi.icon} ${c.adhi.name}</b></div><div><small>Padupatchi</small><b>${c.padu.icon} ${c.padu.name}</b></div><div><small>Units</small><b>${c.minutes}/144</b></div><div><small>Inner</small><b>${hms(c.duration/5)}</b></div></div></article>`}
 function renderCards(){let r=$('cardList');if(!r)return;let now=new Date();r.innerHTML=state.timeline.slice(0,120).map(c=>card(c,now>=c.from&&now<c.to)).join('')}

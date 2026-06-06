@@ -353,3 +353,16 @@ input,
 .v032-inner-line{margin-top:8px!important;display:block!important}.v032-inner-line .inner-dots{margin-top:0!important;gap:10px!important}
 .inner-dot{width:30px!important;height:30px!important}
 @media(max-width:390px){.v033-main-row{grid-template-columns:minmax(0,1fr) 104px!important}.twelve-bubble.big{width:28px!important;height:28px!important}.twelve-bubble.small{width:11px!important;height:11px!important}.inner-dot{width:28px!important;height:28px!important}}
+
+/* v039 polish */
+.v033-main-row{grid-template-columns:minmax(0,1fr) 126px!important;gap:10px!important}
+.v033-lunar-side{min-height:184px!important;max-height:208px!important;padding:9px 7px!important}
+.lunar-arc-fixed{height:106px!important}.lunar-arc-fixed .arc-label{font-size:11px!important}.lunar-arc-fixed .arc-mark{width:15px!important;height:15px!important}
+.lunar-arc-fixed .m1{left:18px!important;top:19px!important}.lunar-arc-fixed .m2{left:39px!important;top:8px!important}.lunar-arc-fixed .m3{left:61px!important;top:19px!important}.lunar-arc-fixed .m4{left:72px!important;top:45px!important}.lunar-arc-fixed .m5{left:61px!important;top:70px!important}.lunar-arc-fixed .m6{left:39px!important;top:82px!important}.lunar-arc-fixed .m7{left:18px!important;top:70px!important}
+.v033-tithi-name{font-size:13px!important}.v034-lunar-small{font-size:10px!important}
+.v032-remaining{font-size:34px!important;margin:4px 0 8px!important}
+.twelve-row{width:100%!important;max-width:none!important;justify-content:space-between!important;gap:6px!important;margin-top:10px!important;padding-right:4px!important}
+.twelve-bubble.big{width:34px!important;height:34px!important;font-size:15px!important}.twelve-bubble.small{width:15px!important;height:15px!important}
+.twelve-caption{font-size:13px!important;margin-top:4px!important}
+.v032-inner-line{display:none!important}
+@media(max-width:390px){.v033-main-row{grid-template-columns:minmax(0,1fr) 116px!important}.twelve-bubble.big{width:31px!important;height:31px!important}.twelve-bubble.small{width:13px!important;height:13px!important}}
