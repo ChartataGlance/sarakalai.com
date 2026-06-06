@@ -495,3 +495,31 @@ input,
   .current-bird-name{font-size:28px}
   .current-bird-hero{font-size:50px}
 }
+/* v042 compact mobile navigation */
+.mobile-bottom-nav{
+  height:54px !important;
+  padding:2px 0 max(2px, env(safe-area-inset-bottom)) !important;
+  grid-template-columns:repeat(3,1fr) !important;
+}
+.mobile-bottom-nav a{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  gap:1px !important;
+  font-size:9px !important;
+  font-weight:700 !important;
+  line-height:1 !important;
+}
+.mobile-bottom-nav .ico{
+  font-size:16px !important;
+  line-height:1 !important;
+  margin-bottom:1px !important;
+}
+.mobile-bottom-nav a.active{color:var(--gold)!important;}
+.mobile-bottom-nav a.active .ico{transform:scale(1.08)!important;}
+@media (max-width:480px){
+ .mobile-bottom-nav{height:50px!important;}
+ .mobile-bottom-nav .ico{font-size:15px!important;}
+ .mobile-bottom-nav a{font-size:8px!important;}
+}
