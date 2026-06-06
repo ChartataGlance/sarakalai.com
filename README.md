@@ -1,5 +1,6 @@
-# Sarakalai Panchapatchi v041
+# v042 render fixed
 
-Bigger bird, activity emoji + Tamil/English activity, GOOD TIME badge, end time, full-width lunar 12-degree blocks, removed percent line, and graded 12-part bubbles.
+Clean rebuilt app. Lunar labels: 180°/360° top, moon emojis bottom corners. Compact mobile nav.
 
-JS syntax OK
+assets/js/app.js: OK
+assets/js/profile.js: OK

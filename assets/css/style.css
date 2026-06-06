@@ -495,54 +495,16 @@ input,
   .current-bird-name{font-size:28px}
   .current-bird-hero{font-size:50px}
 }
-/* v042 compact mobile navigation */
-.mobile-bottom-nav{
-  height:54px !important;
-  padding:2px 0 max(2px, env(safe-area-inset-bottom)) !important;
-  grid-template-columns:repeat(3,1fr) !important;
-}
-.mobile-bottom-nav a{
-  display:flex !important;
-  flex-direction:column !important;
-  align-items:center !important;
-  justify-content:center !important;
-  gap:1px !important;
-  font-size:9px !important;
-  font-weight:700 !important;
-  line-height:1 !important;
-}
-.mobile-bottom-nav .ico{
-  font-size:16px !important;
-  line-height:1 !important;
-  margin-bottom:1px !important;
-}
-.mobile-bottom-nav a.active{color:var(--gold)!important;}
-.mobile-bottom-nav a.active .ico{transform:scale(1.08)!important;}
-@media (max-width:480px){
- .mobile-bottom-nav{height:50px!important;}
- .mobile-bottom-nav .ico{font-size:15px!important;}
- .mobile-bottom-nav a{font-size:8px!important;}
-}
 
-.lunar-top,
-.lunar-bottom{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-weight:900;
-}
-
-.lunar-top{
-  font-size:11px;
-  color:#cfe0ff;
-  margin-bottom:4px;
-}
-
-.lunar-bottom{
-  font-size:18px;
-  margin-top:4px;
-}
-
-.arc-label{
-  display:none;
-}
+/* v042 render fixed */
+.mobile-bottom-nav{height:54px!important;padding:2px 0 max(2px,env(safe-area-inset-bottom))!important;grid-template-columns:repeat(3,1fr)!important}
+.mobile-bottom-nav a{display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:1px!important;font-size:9px!important;font-weight:700!important;line-height:1!important}
+.mobile-bottom-nav .ico{font-size:16px!important;line-height:1!important;margin-bottom:1px!important}.mobile-bottom-nav a.active{color:var(--gold)!important}.mobile-bottom-nav a.active .ico{transform:scale(1.08)!important}
+@media(max-width:480px){.mobile-bottom-nav{height:50px!important}.mobile-bottom-nav .ico{font-size:15px!important}.mobile-bottom-nav a{font-size:8px!important}}
+.v033-lunar-side{width:100%!important;min-height:112px!important;max-height:none!important;padding:8px 12px!important;margin:0 0 12px 0!important;border-radius:18px!important;overflow:hidden!important}
+.v033-lunar-curve{width:100%!important;white-space:normal!important;font-family:"Hind Madurai",system-ui,sans-serif!important}
+.lunar-top,.lunar-bottom{display:flex;justify-content:space-between;align-items:center;font-weight:900}.lunar-top{font-size:12px;color:#cfe0ff;margin-bottom:2px}.lunar-bottom{font-size:20px;margin-top:2px}
+.lunar-arc-fixed{position:relative;height:52px!important;width:100%!important;max-width:none!important;margin:0 auto!important}.lunar-arc-fixed .arc-label{display:none!important}
+.lunar-arc-fixed .arc-mark{position:absolute;width:13px!important;height:13px!important;border-radius:50%;border:1px solid #31476e;background:#0d1930}.lunar-arc-fixed .arc-mark.passed{background:#31476e}.lunar-arc-fixed .arc-mark.active{background:var(--gold);border-color:var(--gold);box-shadow:0 0 18px rgba(255,197,51,.85);transform:scale(1.35)}
+.lunar-arc-fixed .m1{left:8%!important;top:32px!important}.lunar-arc-fixed .m2{left:15%!important;top:21px!important}.lunar-arc-fixed .m3{left:22%!important;top:13px!important}.lunar-arc-fixed .m4{left:29%!important;top:7px!important}.lunar-arc-fixed .m5{left:36%!important;top:4px!important}.lunar-arc-fixed .m6{left:43%!important;top:2px!important}.lunar-arc-fixed .m7{left:50%!important;top:1px!important}.lunar-arc-fixed .m8{left:57%!important;top:2px!important}.lunar-arc-fixed .m9{left:64%!important;top:4px!important}.lunar-arc-fixed .m10{left:71%!important;top:7px!important}.lunar-arc-fixed .m11{left:78%!important;top:13px!important}.lunar-arc-fixed .m12{left:85%!important;top:21px!important}.lunar-arc-fixed .m13{left:92%!important;top:32px!important}
+.v033-tithi-name{font-size:13px!important;margin-top:2px!important;color:var(--gold);font-weight:950;text-align:center}.v034-lunar-small{display:inline-block;margin-left:6px;color:var(--muted);font-size:10px!important}
