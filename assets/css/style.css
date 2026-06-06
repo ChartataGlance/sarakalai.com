@@ -221,3 +221,61 @@ input,
     font-size:14px;
   }
 }
+
+/* v035: 12-part visible strength row */
+.twelve-row{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex-wrap:nowrap;
+  margin-top:12px;
+  overflow-x:auto;
+  padding:4px 2px;
+}
+.twelve-bubble{
+  display:grid;
+  place-items:center;
+  border-radius:999px;
+  border:1px solid #31476e;
+  background:#0d1930;
+  color:#cfe0ff;
+  font-weight:950;
+  flex:0 0 auto;
+}
+.twelve-bubble.big{
+  width:26px;
+  height:26px;
+  font-size:12px;
+}
+.twelve-bubble.small{
+  width:12px;
+  height:12px;
+  font-size:0;
+}
+.twelve-bubble.passed{
+  background:#31476e;
+}
+.twelve-bubble.active{
+  background:var(--gold);
+  color:#071225;
+  border-color:var(--gold);
+  box-shadow:0 0 18px rgba(255,197,51,.75);
+  transform:scale(1.18);
+}
+.twelve-caption{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:900;
+  margin-top:4px;
+}
+.quality-line{
+  margin-top:8px;
+  font-size:14px;
+  font-weight:950;
+  color:var(--gold);
+}
+@media(max-width:760px){
+  .twelve-row{gap:5px}
+  .twelve-bubble.big{width:24px;height:24px;font-size:11px}
+  .twelve-bubble.small{width:10px;height:10px}
+}

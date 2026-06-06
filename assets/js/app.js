@@ -94,6 +94,32 @@ function renderSamamDots(c){
    root.appendChild(d);
  }
 }
+function qualityForActivity(activity){
+ const map={
+  Rule:{stars:'⭐⭐⭐⭐⭐',label:'Excellent'},
+  Eat:{stars:'⭐⭐⭐⭐',label:'Good'},
+  Walk:{stars:'⭐⭐⭐',label:'Average'},
+  Sleep:{stars:'⭐⭐',label:'Weak'},
+  Death:{stars:'⭐',label:'Avoid'}
+ };
+ return map[activity]||{stars:'',label:''};
+}
+function renderTwelveParts(c){
+ const root=$('twelveRow');if(!root||!c)return;
+ const now=new Date();
+ const part=c.duration/12;
+ const active=Math.min(12,Math.max(1,Math.floor((now-c.from)/part)+1));
+ root.innerHTML='';
+ for(let i=1;i<=12;i++){
+   const b=document.createElement('span');
+   b.className='twelve-bubble '+(i<=5?'big':'small')+' '+(i<active?'passed':(i===active?'active':''));
+   b.textContent=i<=5?String(i):'';
+   root.appendChild(b);
+ }
+ if($('twelveCaption')) $('twelveCaption').textContent=`12 parts · current ${active}/12`;
+ const q=qualityForActivity(c.activity_en);
+ if($('qualityText')) $('qualityText').textContent=`${q.stars} ${q.label}`;
+}
 function renderCurrent(){
  let c=state.current;if(!c)return;
  let now=new Date(),remain=c.to-now,prog=Math.min(100,Math.max(0,((now-c.from)/c.duration)*100));
@@ -111,7 +137,7 @@ function renderCurrent(){
  if($('paduEmoji')) $('paduEmoji').textContent=c.padu.icon;
  if($('adhiText')) $('adhiText').textContent=c.adhi.name;
  if($('paduText')) $('paduText').textContent=c.padu.name;
- renderSamamDots(c);renderMicro(c);renderMoon();
+ renderSamamDots(c);renderMicro(c);renderTwelveParts(c);renderMoon();
 }
 function card(c,active=false){return `<article class="timeline-card ${active?'active':''}"><div class="topline"><span>${fmtDate(c.from)} · ${c.phase==='Rising Moon'?'வளர்பிறை':'தேய்பிறை'} · ${c.tithi}</span><span>${c.period} · Samam ${c.samam}</span></div><div class="body"><div class="birdbig">${c.bird.icon}</div><div><div class="name">${c.bird.name} · ${c.activity_en}</div><div class="time">${fmt(c.from)} → ${fmt(c.to)} · ${hms(c.duration)}</div></div></div><div class="context"><div><small>Adhikara</small><b>${c.adhi.icon} ${c.adhi.name}</b></div><div><small>Padupatchi</small><b>${c.padu.icon} ${c.padu.name}</b></div><div><small>Units</small><b>${c.minutes}/144</b></div><div><small>Inner</small><b>${hms(c.duration/5)}</b></div></div></article>`}
 function renderCards(){let r=$('cardList');if(!r)return;let now=new Date();r.innerHTML=state.timeline.slice(0,120).map(c=>card(c,now>=c.from&&now<c.to)).join('')}

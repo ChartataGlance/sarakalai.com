@@ -1,3 +1,3 @@
-# Sarakalai Panchapatchi v034
+# Sarakalai Panchapatchi v035
 
-Taller detailed right-side lunar panel with bigger curve, completed/current/upcoming dots, degree, and tithi detail.
+Adds visible 12-part row in live card: parts 1-5 larger bubbles, parts 6-12 smaller dots, active highlighted, with activity quality text.
