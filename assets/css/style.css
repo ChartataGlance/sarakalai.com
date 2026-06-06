@@ -279,3 +279,30 @@ input,
   .twelve-bubble.big{width:24px;height:24px;font-size:11px}
   .twelve-bubble.small{width:10px;height:10px}
 }
+
+/* v036: 12-part row replaces separate progress bar */
+.v032-activity .progress{
+  display:none;
+}
+.twelve-row{
+  margin-top:10px;
+  padding:8px 2px 4px;
+  gap:7px;
+}
+.twelve-bubble.big{
+  width:30px;
+  height:30px;
+  font-size:13px;
+}
+.twelve-bubble.small{
+  width:13px;
+  height:13px;
+}
+.twelve-caption{
+  margin-top:2px;
+}
+@media(max-width:760px){
+  .twelve-row{gap:6px}
+  .twelve-bubble.big{width:28px;height:28px;font-size:12px}
+  .twelve-bubble.small{width:11px;height:11px}
+}

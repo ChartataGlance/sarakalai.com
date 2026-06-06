@@ -57,21 +57,20 @@ function renderMoon(){
      return '○';
    };
    const lines=[
-     `${start}`,
-     `      ╲`,
-     `       ${dot(1)}`,
-     `        ${dot(2)}`,
-     `         ${dot(3)}`,
-     `          ${dot(4)}`,
-     `         ${dot(5)}`,
-     `        ${dot(6)}`,
-     `       ${dot(7)}`,
-     `      ╱`,
-     `${end}`
+     start,
+     '      ╲',
+     '       '+dot(1),
+     '        '+dot(2),
+     '         '+dot(3),
+     '          '+dot(4),
+     '         '+dot(5),
+     '        '+dot(6),
+     '       '+dot(7),
+     '      ╱',
+     end
    ];
    strip.className='v033-lunar-curve';
-   strip.innerHTML=lines.join('
-');
+   strip.textContent=lines.join('\\n');
  }
  if($('tithiCaption')){
    $('tithiCaption').innerHTML=`${c.tithi || 'Active Tithi'}<div class="v034-lunar-small">${Math.round(c.moonDeg)}° · ${c.phase==='Rising Moon'?'0° → 180°':'180° → 360°'}</div><div class="v034-lunar-legend"><span>● passed</span><span><b>🟡 now</b></span><span>○ next</span></div>`;
@@ -107,8 +106,8 @@ function qualityForActivity(activity){
 function renderTwelveParts(c){
  const root=$('twelveRow');if(!root||!c)return;
  const now=new Date();
- const part=c.duration/12;
- const active=Math.min(12,Math.max(1,Math.floor((now-c.from)/part)+1));
+ const progress=Math.min(1,Math.max(0,(now-c.from)/c.duration));
+ const active=Math.min(12,Math.max(1,Math.floor(progress*12)+1));
  root.innerHTML='';
  for(let i=1;i<=12;i++){
    const b=document.createElement('span');
@@ -116,7 +115,7 @@ function renderTwelveParts(c){
    b.textContent=i<=5?String(i):'';
    root.appendChild(b);
  }
- if($('twelveCaption')) $('twelveCaption').textContent=`12 parts · current ${active}/12`;
+ if($('twelveCaption')) $('twelveCaption').textContent=`Activity progress · ${Math.round(progress*100)}% · part ${active}/12`;
  const q=qualityForActivity(c.activity_en);
  if($('qualityText')) $('qualityText').textContent=`${q.stars} ${q.label}`;
 }
@@ -126,7 +125,7 @@ function renderCurrent(){
  if($('currentTitle')) $('currentTitle').textContent=`${c.bird.icon} ${c.bird.name} • ${c.activity_ta || c.activity_en}`;
  if($('countdownText')) $('countdownText').textContent=`⏳ ${mmss(remain)} remaining`;
  if($('activityDurationText')) $('activityDurationText').textContent=`${mmss(c.duration)} total · ${fmt(c.from)} → ${fmt(c.to)}`;
- if($('activityBar')) $('activityBar').style.width=`${prog}%`;
+ if($('activityBar')) $('activityBar').style.width=`0%`;
  if($('activityPercentText')) $('activityPercentText').textContent=`${Math.round(prog)}% complete`;
  if($('sunText')) $('sunText').textContent=`${fmt(state.sunrise)} / ${fmt(state.sunset)}`;
  if($('periodText')) $('periodText').textContent=c.period;
