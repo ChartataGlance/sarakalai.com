@@ -21,6 +21,14 @@ function showTimingChoices(show){
   if(saved) saved.style.display=show?'none':'flex';
 }
 function pad(n){return String(n).padStart(2,'0')}function fmt(d){return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`}function hms(ms){const s=Math.max(0,Math.round(ms/1000)),h=[Math.floor(s/3600),Math.floor(s/60)%60,s%60];return `${pad(h[0])}:${pad(h[1])}:${pad(h[2])}`}function mmss(ms){const s=Math.max(0,Math.round(ms/1000));const m=Math.floor(s/60);const sec=s%60;return `${pad(m)}:${pad(sec)}`}function addDays(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n,d.getHours(),d.getMinutes(),d.getSeconds())}
+
+// helper: return Tamil weekday name for a Date
+function tamilDay(date){
+  if(!date) return '';
+  if(typeof date.getDay !== 'function') date=new Date(date);
+  return DAY_ORDER_TA[date.getDay()];
+}
+
 function moonInfo(date=new Date()){
  const syn=29.530588853,new0=Date.UTC(2000,0,6,18,14,0);
  let age=((date-new0)/86400000)%syn;if(age<0)age+=syn;
