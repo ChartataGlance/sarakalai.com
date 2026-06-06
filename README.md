@@ -1,3 +1,5 @@
-# Sarakalai Panchapatchi v037
+# Sarakalai Panchapatchi v038
 
-Removes Rising/Waning pages from navigation, adds Profile page with browser-cached name, date of birth, time of birth, and a profile card using lunar details.
+Fixes lunar arc layout and stretches activity/inner progress.
+
+JS syntax OK

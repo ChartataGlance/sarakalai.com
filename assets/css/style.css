@@ -331,3 +331,25 @@ input,
   .mobile-bottom-nav a[href="rising.html"], .mobile-bottom-nav a[href="waning.html"]{display:none}
   .profile-grid{grid-template-columns:1fr}
 }
+
+/* v038 live layout fix */
+.v033-main-row{grid-template-columns:minmax(0,1fr) 112px!important;gap:8px!important;align-items:start!important}
+.v033-lunar-side{min-height:164px!important;max-height:182px!important;padding:7px 5px!important;border-radius:18px!important;align-self:start!important;overflow:hidden!important}
+.v033-lunar-curve{font-family:"Hind Madurai",system-ui,sans-serif!important;white-space:normal!important;line-height:1.15!important;font-size:12px!important;text-align:center!important}
+.lunar-arc-fixed{position:relative;height:92px;width:100%}
+.lunar-arc-fixed .arc-label{position:absolute;font-size:10px;color:#cfe0ff;font-weight:900;white-space:nowrap}
+.lunar-arc-fixed .arc-start{left:1px;top:47px}.lunar-arc-fixed .arc-end{right:1px;top:47px}
+.lunar-arc-fixed .arc-mark{position:absolute;width:14px;height:14px;border-radius:50%;border:1px solid #31476e;background:#0d1930}
+.lunar-arc-fixed .arc-mark.passed{background:#31476e}
+.lunar-arc-fixed .arc-mark.active{background:var(--gold);border-color:var(--gold);box-shadow:0 0 16px rgba(255,197,51,.85);transform:scale(1.22)}
+.lunar-arc-fixed .m1{left:15px;top:17px}.lunar-arc-fixed .m2{left:34px;top:7px}.lunar-arc-fixed .m3{left:54px;top:17px}.lunar-arc-fixed .m4{left:64px;top:39px}.lunar-arc-fixed .m5{left:54px;top:61px}.lunar-arc-fixed .m6{left:34px;top:70px}.lunar-arc-fixed .m7{left:15px;top:61px}
+.v033-tithi-name{font-size:12px!important;line-height:1.15!important;margin-top:2px!important}
+.v034-lunar-small{font-size:9px!important;margin-top:3px!important}.v034-lunar-legend{display:none!important}
+.v032-activity-title{font-size:22px!important;margin-bottom:5px!important}.v032-remaining{font-size:28px!important;line-height:1.05!important;margin:4px 0 7px!important}
+.duration-line{font-size:15px!important;margin-bottom:4px!important}.quality-line{margin-top:6px!important;font-size:14px!important}
+.twelve-row{width:100%;justify-content:space-between;gap:4px!important;margin-top:7px!important;padding:4px 0!important}
+.twelve-bubble.big{width:30px!important;height:30px!important;font-size:13px!important}.twelve-bubble.small{width:13px!important;height:13px!important}
+.twelve-caption{font-size:11px!important;margin-top:1px!important}
+.v032-inner-line{margin-top:8px!important;display:block!important}.v032-inner-line .inner-dots{margin-top:0!important;gap:10px!important}
+.inner-dot{width:30px!important;height:30px!important}
+@media(max-width:390px){.v033-main-row{grid-template-columns:minmax(0,1fr) 104px!important}.twelve-bubble.big{width:28px!important;height:28px!important}.twelve-bubble.small{width:11px!important;height:11px!important}.inner-dot{width:28px!important;height:28px!important}}
