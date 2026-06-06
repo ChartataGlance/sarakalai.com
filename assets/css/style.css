@@ -129,3 +129,20 @@ input,
   .live-info-grid{display:block}
   .live-info-grid > div:not(.star-combo){display:none}
 }
+
+/* v032 compact live-card redesign */
+.live-card.v032{overflow:hidden}
+.live-card-head.v032-head{align-items:center;padding:12px 14px}
+.v032-title-line{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:20px;font-weight:950}
+.v032-meta-line{display:flex;gap:14px;flex-wrap:wrap;color:#dbe8ff;font-weight:900;font-size:13px;margin-top:4px}
+.v032-meta-line span{white-space:nowrap}.v032-change{margin-left:auto;white-space:nowrap}
+.v032-birds{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.v032-bird-box{background:#091831;border:1px solid #1d3154;border-radius:16px;padding:10px;text-align:center}
+.v032-bird-box small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;font-weight:900;margin-bottom:3px}
+.v032-bird-box .emoji{font-size:36px;line-height:1}.v032-bird-box b{display:block;margin-top:4px;font-size:15px}
+.v032-separator{height:1px;background:#2d4774;margin:10px 0}
+.v032-tithi-line{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:4px 0 2px}.v032-tithi-line .tithi-dot{min-width:20px;width:20px;height:20px;font-size:8px}.v032-tithi-line .tithi-end{font-size:11px}
+.v032-caption{text-align:center;color:var(--muted);font-size:11px;font-weight:900;margin-top:4px}
+.samam-dots{display:flex;gap:8px;align-items:center;margin:6px 0 12px}.samam-dot{width:22px;height:22px;border-radius:50%;border:1px solid #31476e;background:#0d1930;display:grid;place-items:center;font-size:11px;font-weight:950;color:#cfe0ff}.samam-dot.done{background:#31476e}.samam-dot.active{background:var(--gold);border-color:var(--gold);color:#071225;box-shadow:0 0 18px rgba(255,197,51,.7);transform:scale(1.16)}
+.samam-label{color:var(--muted);font-size:12px;font-weight:900;margin-bottom:4px}.v032-activity{display:block}.v032-activity-title{font-size:23px;font-weight:950;margin-bottom:8px}.v032-remaining{font-size:28px;color:var(--gold);font-weight:950;margin:4px 0 10px}.v032-inner-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}.v032-inner-line .inner-dots{margin-top:0}.v032-hidden{display:none!important}
+@media(max-width:760px){.live-card-head.v032-head{padding:10px 12px}.v032-title-line{font-size:17px}.v032-meta-line{gap:8px;font-size:12px}.v032-change{font-size:11px;padding:7px 8px}.v032-bird-box .emoji{font-size:30px}.v032-activity-title{font-size:20px}.v032-remaining{font-size:24px}}

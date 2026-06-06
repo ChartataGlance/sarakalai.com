@@ -1,3 +1,3 @@
-# Sarakalai Panchapatchi v031
+# Sarakalai Panchapatchi v032
 
-Adds Hind Madurai web font styling, mobile fixed bottom navigation, compact Nakshatra/Pada/Lord block, and side-by-side Adhikara/Padupatchi cards.
+Live card redesigned per changes.md.

@@ -39,23 +39,23 @@ function build(){const now=new Date(),end=new Date(now.getTime()+7*864e5),all=[]
 function renderMoon(){
  const c=state.current;if(!c)return;
  if($('moonPhaseTitle')) $('moonPhaseTitle').textContent=c.phase==='Rising Moon'?'வளர்பிறை':'தேய்பிறை';
- if($('tithiTitle')) $('tithiTitle').textContent=c.tithi || '--';
- if($('rasiText')) $('rasiText').textContent=`${c.rasiTamil} / ${c.rasiEnglish}`;
- if($('nakText')) $('nakText').textContent=`${c.nakTamil} / ${c.nakEnglish}`;
- if($('padaText')) $('padaText').textContent=`பாதம் ${c.pada}`;
- if($('lordText')) $('lordText').textContent=c.lord;
+ if($('rasiText')) $('rasiText').textContent=c.rasiTamil || '--';
+ if($('nakText')) $('nakText').textContent=c.nakTamil || '--';
+ if($('padaText')) $('padaText').textContent=c.pada || '--';
+ if($('lordText')) $('lordText').textContent=c.lord || '--';
  const strip=$('tithiStrip');
  if(strip){
-   const start=c.phase==='Rising Moon'?0:15, end=c.phase==='Rising Moon'?15:30;
+   const start=c.phase==='Rising Moon'?0:15;
+   const end=c.phase==='Rising Moon'?15:30;
    let html=`<span class="tithi-end">${start===0?'0°':'180°'}</span>`;
    for(let i=start;i<=end;i++){
-     const active=i===c.tithiIndex, emoji=i===0||i===30?'🌑':(i===15?'🌕':(i<15?'🌔':'🌘'));
-     html+=`<span class="tithi-dot ${active?'active':''}" title="${TITHI[i]||''}">${active?'🟡':emoji}</span>`;
+     const active=i===c.tithiIndex;
+     html+=`<span class="tithi-dot ${active?'active':''}" title="${TITHI[i]||''}">${active?'🟡':'●'}</span>`;
    }
    html+=`<span class="tithi-end">${end===15?'180°':'360°'}</span>`;
    strip.innerHTML=html;
  }
- if($('tithiCaption')) $('tithiCaption').textContent=c.phase==='Rising Moon'?'0° right → 180° left · சுக்ல / வளர்பிறை':'180° left → 360° right · கிருஷ்ண / தேய்பிறை';
+ if($('tithiCaption')) $('tithiCaption').textContent=c.tithi || 'Active Tithi';
 }
 function renderMicro(c){
  if(!c)return;
@@ -64,25 +64,34 @@ function renderMicro(c){
  if(dots){dots.innerHTML='';for(let i=0;i<5;i++){const d=document.createElement('span');d.className='inner-dot '+(i<act?'done':(i===act?'active':''));dots.appendChild(d)}}
  if($('innerText')) $('innerText').textContent=`Inner Part ${act+1} / 5`;
 }
+function renderSamamDots(c){
+ const root=$('samamDots');if(!root||!c)return;
+ root.innerHTML='';
+ for(let i=1;i<=5;i++){
+   const d=document.createElement('span');
+   d.className='samam-dot '+(i<c.samam?'done':(i===c.samam?'active':''));
+   d.textContent=i===c.samam?'🟡':'●';
+   root.appendChild(d);
+ }
+}
 function renderCurrent(){
  let c=state.current;if(!c)return;
  let now=new Date(),remain=c.to-now,prog=Math.min(100,Math.max(0,((now-c.from)/c.duration)*100));
- if($('currentIcon')) $('currentIcon').textContent=c.bird.icon;
- if($('currentTitle')) $('currentTitle').textContent=`${c.bird.name} • ${c.activity_ta || c.activity_en}`;
- if($('countdownText')) $('countdownText').textContent=`${mmss(remain)} remaining`;
+ if($('currentTitle')) $('currentTitle').textContent=`${c.bird.icon} ${c.bird.name} • ${c.activity_ta || c.activity_en}`;
+ if($('countdownText')) $('countdownText').textContent=`⏳ ${mmss(remain)} remaining`;
  if($('activityDurationText')) $('activityDurationText').textContent=`${mmss(c.duration)} total · ${fmt(c.from)} → ${fmt(c.to)}`;
  if($('activityBar')) $('activityBar').style.width=`${prog}%`;
  if($('activityPercentText')) $('activityPercentText').textContent=`${Math.round(prog)}% complete`;
  if($('sunText')) $('sunText').textContent=`${fmt(state.sunrise)} / ${fmt(state.sunset)}`;
  if($('periodText')) $('periodText').textContent=c.period;
- if($('samamText')) $('samamText').textContent=`Samam ${c.samam}`;
+ if($('samamText')) $('samamText').textContent=`${c.period.toLowerCase()} samam`;
  if($('currentPath')) $('currentPath').textContent=`${fmt(c.from)} → ${fmt(c.to)}`;
- if($('todayText')) $('todayText').textContent=`${c.dayTa} / ${c.dayEn}`;
+ if($('todayText')) $('todayText').textContent=c.dayTa || c.dayEn;
  if($('adhiEmoji')) $('adhiEmoji').textContent=c.adhi.icon;
  if($('paduEmoji')) $('paduEmoji').textContent=c.padu.icon;
  if($('adhiText')) $('adhiText').textContent=c.adhi.name;
  if($('paduText')) $('paduText').textContent=c.padu.name;
- renderMicro(c);renderMoon();
+ renderSamamDots(c);renderMicro(c);renderMoon();
 }
 function card(c,active=false){return `<article class="timeline-card ${active?'active':''}"><div class="topline"><span>${fmtDate(c.from)} · ${c.phase==='Rising Moon'?'வளர்பிறை':'தேய்பிறை'} · ${c.tithi}</span><span>${c.period} · Samam ${c.samam}</span></div><div class="body"><div class="birdbig">${c.bird.icon}</div><div><div class="name">${c.bird.name} · ${c.activity_en}</div><div class="time">${fmt(c.from)} → ${fmt(c.to)} · ${hms(c.duration)}</div></div></div><div class="context"><div><small>Adhikara</small><b>${c.adhi.icon} ${c.adhi.name}</b></div><div><small>Padupatchi</small><b>${c.padu.icon} ${c.padu.name}</b></div><div><small>Units</small><b>${c.minutes}/144</b></div><div><small>Inner</small><b>${hms(c.duration/5)}</b></div></div></article>`}
 function renderCards(){let r=$('cardList');if(!r)return;let now=new Date();r.innerHTML=state.timeline.slice(0,120).map(c=>card(c,now>=c.from&&now<c.to)).join('')}
