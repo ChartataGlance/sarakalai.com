@@ -12,22 +12,36 @@
       <div class="v032-bird-box"><small>அதிகாரப்பட்சி</small><div class="emoji" id="adhiEmoji">--</div><b id="adhiText">--</b></div>
       <div class="v032-bird-box"><small>படுபட்சி</small><div class="emoji" id="paduEmoji">--</div><b id="paduText">--</b></div>
     </div>
-    <div class="v032-separator"></div>
-    <div class="v032-tithi-line" id="tithiStrip"></div>
-    <div class="v032-caption" id="tithiCaption">Active Tithi</div>
+    
   </div>
   <div class="live-section">
-    <div class="samam-label" id="samamText">day samam</div>
-    <div class="samam-dots" id="samamDots"></div>
-    <div class="v032-activity">
-      <div class="v032-activity-title" id="currentTitle">🐦 --</div>
-      <div class="v032-remaining" id="countdownText">--:-- remaining</div>
-      <div class="duration-line" id="activityDurationText">--:-- total</div>
-      <div class="progress"><div class="bar" id="activityBar"></div></div>
-      <div class="percent-line" id="activityPercentText">0% complete</div>
-      <div class="v032-inner-line"><div class="inner-dots" id="innerDots"></div><div class="percent-line" id="innerText">Inner Part -- / 5</div></div>
+    <div class="v033-main-row">
+      <div>
+        <div class="samam-label" id="samamText">day samam</div>
+        <div class="samam-dots" id="samamDots"></div>
+        <div class="v032-activity">
+          <div class="v032-activity-title" id="currentTitle">🐦 --</div>
+          <div class="v032-remaining" id="countdownText">--:-- remaining</div>
+          <div class="duration-line" id="activityDurationText">--:-- total</div>
+          <div class="progress"><div class="bar" id="activityBar"></div></div>
+          <div class="percent-line" id="activityPercentText">0% complete</div>
+          <div class="v032-inner-line">
+            <div class="inner-dots" id="innerDots"></div>
+            <div class="percent-line" id="innerText">Inner Part -- / 5</div>
+          </div>
+        </div>
+      </div>
+      <aside class="v033-lunar-side">
+        <div id="tithiStrip" class="v033-lunar-curve"></div>
+        <div class="v033-tithi-name" id="tithiCaption">Active Tithi</div>
+      </aside>
     </div>
-    <div class="stats v032-hidden"><div class="stat"><b>Sunrise / Sunset</b><span id="sunText">--</span></div><div class="stat"><b>Period</b><span id="periodText">--</span></div><div class="stat"><b>Time</b><span id="currentPath">--</span></div></div>
+    <div class="stats v032-hidden">
+      <div class="stat"><b>Sunrise / Sunset</b><span id="sunText">--</span></div>
+      <div class="stat"><b>Period</b><span id="periodText">--</span></div>
+      <div class="stat"><b>Time</b><span id="currentPath">--</span></div>
+    </div>
+  </div>
   </div>
   <div class="live-section" id="timingChoice">
     <div class="controls"><button class="primary" id="locateBtn">Use My Location</button><button id="manualBtn">Manual Sunrise/Sunset</button><button id="fallbackBtn">Traditional 6am/6pm</button></div>

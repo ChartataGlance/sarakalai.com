@@ -146,3 +146,11 @@ input,
 .samam-dots{display:flex;gap:8px;align-items:center;margin:6px 0 12px}.samam-dot{width:22px;height:22px;border-radius:50%;border:1px solid #31476e;background:#0d1930;display:grid;place-items:center;font-size:11px;font-weight:950;color:#cfe0ff}.samam-dot.done{background:#31476e}.samam-dot.active{background:var(--gold);border-color:var(--gold);color:#071225;box-shadow:0 0 18px rgba(255,197,51,.7);transform:scale(1.16)}
 .samam-label{color:var(--muted);font-size:12px;font-weight:900;margin-bottom:4px}.v032-activity{display:block}.v032-activity-title{font-size:23px;font-weight:950;margin-bottom:8px}.v032-remaining{font-size:28px;color:var(--gold);font-weight:950;margin:4px 0 10px}.v032-inner-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}.v032-inner-line .inner-dots{margin-top:0}.v032-hidden{display:none!important}
 @media(max-width:760px){.live-card-head.v032-head{padding:10px 12px}.v032-title-line{font-size:17px}.v032-meta-line{gap:8px;font-size:12px}.v032-change{font-size:11px;padding:7px 8px}.v032-bird-box .emoji{font-size:30px}.v032-activity-title{font-size:20px}.v032-remaining{font-size:24px}}
+
+/* v033: lunar arc moved to right side of live activity */
+.v033-main-row{display:grid;grid-template-columns:minmax(0,1fr) 118px;gap:10px;align-items:center}
+.v033-lunar-side{border:1px solid #263b61;background:#091831;border-radius:18px;padding:8px;min-height:160px;display:flex;flex-direction:column;justify-content:center}
+.v033-lunar-curve{font-family:monospace;white-space:pre;text-align:center;line-height:1.05;font-size:13px;color:#cfe0ff}
+.v033-tithi-name{color:var(--gold);font-weight:950;font-size:10px;text-align:center;margin-top:6px;line-height:1.2}
+.v033-old-lunar-section{display:none!important}
+@media(max-width:760px){.v033-main-row{grid-template-columns:minmax(0,1fr) 96px;gap:8px}.v033-lunar-side{min-height:148px;padding:6px}.v033-lunar-curve{font-size:11px}.v033-tithi-name{font-size:9px}.v032-remaining{font-size:22px}.v032-activity-title{font-size:19px}}

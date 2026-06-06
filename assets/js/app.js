@@ -45,15 +45,21 @@ function renderMoon(){
  if($('lordText')) $('lordText').textContent=c.lord || '--';
  const strip=$('tithiStrip');
  if(strip){
-   const start=c.phase==='Rising Moon'?0:15;
-   const end=c.phase==='Rising Moon'?15:30;
-   let html=`<span class="tithi-end">${start===0?'0°':'180°'}</span>`;
-   for(let i=start;i<=end;i++){
-     const active=i===c.tithiIndex;
-     html+=`<span class="tithi-dot ${active?'active':''}" title="${TITHI[i]||''}">${active?'🟡':'●'}</span>`;
-   }
-   html+=`<span class="tithi-end">${end===15?'180°':'360°'}</span>`;
-   strip.innerHTML=html;
+   const rising=c.phase==='Rising Moon';
+   const start=rising?'0° 🌑':'180° 🌕';
+   const end=rising?'180° 🌕':'360° 🌑';
+   const halfIndex=rising ? c.tithiIndex : c.tithiIndex-15;
+   const pos=Math.max(1,Math.min(5,Math.ceil(halfIndex/3)));
+   const marks=[1,2,3,4,5].map(i=>i===pos?'🟡':(i<pos?'●':'○'));
+   strip.textContent=`${start}
+      ╲
+       ${marks[0]}
+         ${marks[1]}
+           ${marks[2]}
+         ${marks[3]}
+       ${marks[4]}
+      ╱
+${end}`;
  }
  if($('tithiCaption')) $('tithiCaption').textContent=c.tithi || 'Active Tithi';
 }

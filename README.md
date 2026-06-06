@@ -1,3 +1,3 @@
-# Sarakalai Panchapatchi v032
+# Sarakalai Panchapatchi v033
 
-Live card redesigned per changes.md.
+Lunar cycle moved to right side of live card.
