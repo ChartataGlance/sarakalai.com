@@ -43,25 +43,39 @@ function renderMoon(){
  if($('nakText')) $('nakText').textContent=c.nakTamil || '--';
  if($('padaText')) $('padaText').textContent=c.pada || '--';
  if($('lordText')) $('lordText').textContent=c.lord || '--';
+
  const strip=$('tithiStrip');
  if(strip){
    const rising=c.phase==='Rising Moon';
    const start=rising?'0° 🌑':'180° 🌕';
    const end=rising?'180° 🌕':'360° 🌑';
    const halfIndex=rising ? c.tithiIndex : c.tithiIndex-15;
-   const pos=Math.max(1,Math.min(5,Math.ceil(halfIndex/3)));
-   const marks=[1,2,3,4,5].map(i=>i===pos?'🟡':(i<pos?'●':'○'));
-   strip.textContent=`${start}
-      ╲
-       ${marks[0]}
-         ${marks[1]}
-           ${marks[2]}
-         ${marks[3]}
-       ${marks[4]}
-      ╱
-${end}`;
+   const pos=Math.max(1,Math.min(7,Math.ceil(halfIndex/2.15)));
+   const dot=(i)=>{
+     if(i===pos) return '🟡';
+     if(i<pos) return '●';
+     return '○';
+   };
+   const lines=[
+     `${start}`,
+     `      ╲`,
+     `       ${dot(1)}`,
+     `        ${dot(2)}`,
+     `         ${dot(3)}`,
+     `          ${dot(4)}`,
+     `         ${dot(5)}`,
+     `        ${dot(6)}`,
+     `       ${dot(7)}`,
+     `      ╱`,
+     `${end}`
+   ];
+   strip.className='v033-lunar-curve';
+   strip.innerHTML=lines.join('
+');
  }
- if($('tithiCaption')) $('tithiCaption').textContent=c.tithi || 'Active Tithi';
+ if($('tithiCaption')){
+   $('tithiCaption').innerHTML=`${c.tithi || 'Active Tithi'}<div class="v034-lunar-small">${Math.round(c.moonDeg)}° · ${c.phase==='Rising Moon'?'0° → 180°':'180° → 360°'}</div><div class="v034-lunar-legend"><span>● passed</span><span><b>🟡 now</b></span><span>○ next</span></div>`;
+ }
 }
 function renderMicro(c){
  if(!c)return;

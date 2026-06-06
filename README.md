@@ -1,3 +1,3 @@
-# Sarakalai Panchapatchi v033
+# Sarakalai Panchapatchi v034
 
-Lunar cycle moved to right side of live card.
+Taller detailed right-side lunar panel with bigger curve, completed/current/upcoming dots, degree, and tithi detail.
