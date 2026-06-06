@@ -385,3 +385,113 @@ input,
 .twelve-bubble.small{width:14px!important;height:14px!important}
 @media(max-width:760px){.v032-activity-title{font-size:31px!important}.v032-remaining{font-size:38px!important}.v033-lunar-side{min-height:86px!important;padding:7px 8px!important}.lunar-arc-fixed{height:58px!important}.lunar-arc-fixed .arc-mark{width:15px!important;height:15px!important}.twelve-bubble.big{width:34px!important;height:34px!important}.twelve-bubble.small{width:12px!important;height:12px!important}}
 @media(max-width:390px){.v032-activity-title{font-size:28px!important}.v032-remaining{font-size:34px!important}.twelve-bubble.big{width:31px!important;height:31px!important}.twelve-bubble.small{width:10px!important;height:10px!important}}
+
+/* v041 final live polish */
+.v032-activity-title{
+  display:grid;
+  grid-template-columns:72px 1fr;
+  align-items:center;
+  gap:12px;
+  font-size:28px!important;
+  line-height:1.08!important;
+}
+.current-bird-hero{
+  font-size:58px;
+  line-height:1;
+  filter:drop-shadow(0 0 18px rgba(255,197,51,.22));
+}
+.current-bird-name{
+  font-size:34px;
+  font-weight:950;
+}
+.current-activity-line{
+  margin-top:4px;
+  font-size:18px;
+  color:#dbe8ff;
+  font-weight:950;
+}
+.good-time-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid rgba(255,197,51,.45);
+  background:rgba(255,197,51,.10);
+  color:var(--gold);
+  font-weight:950;
+  font-size:16px;
+}
+.v032-remaining{font-size:39px!important;margin-top:8px!important}
+.duration-line{font-size:16px!important}
+.percent-line#activityPercentText{display:none!important}
+.v033-lunar-side{width:100%!important;min-height:98px!important;padding:10px 12px!important}
+.lunar-arc-fixed{height:58px!important;max-width:none!important;width:100%!important}
+.lunar-arc-fixed .arc-label{font-size:12px!important;top:22px!important}
+.lunar-arc-fixed .arc-start{left:0!important}.lunar-arc-fixed .arc-end{right:0!important}
+.lunar-arc-fixed .arc-mark{width:13px!important;height:13px!important}
+.lunar-arc-fixed .m1{left:8%!important;top:30px!important}
+.lunar-arc-fixed .m2{left:15%!important;top:20px!important}
+.lunar-arc-fixed .m3{left:22%!important;top:12px!important}
+.lunar-arc-fixed .m4{left:29%!important;top:7px!important}
+.lunar-arc-fixed .m5{left:36%!important;top:4px!important}
+.lunar-arc-fixed .m6{left:43%!important;top:3px!important}
+.lunar-arc-fixed .m7{left:50%!important;top:2px!important}
+.lunar-arc-fixed .m8{left:57%!important;top:3px!important}
+.lunar-arc-fixed .m9{left:64%!important;top:4px!important}
+.lunar-arc-fixed .m10{left:71%!important;top:7px!important}
+.lunar-arc-fixed .m11{left:78%!important;top:12px!important}
+.lunar-arc-fixed .m12{left:85%!important;top:20px!important}
+.lunar-arc-fixed .m13{left:92%!important;top:30px!important}
+.v033-tithi-name{font-size:13px!important}
+.twelve-row{
+  gap:5px!important;
+  justify-content:space-between!important;
+  align-items:center!important;
+  overflow:visible!important;
+}
+.twelve-bubble{transition:.2s ease}
+.twelve-bubble.big.p1{width:27px!important;height:27px!important;font-size:11px!important}
+.twelve-bubble.big.p2{width:30px!important;height:30px!important;font-size:12px!important}
+.twelve-bubble.big.p3{width:33px!important;height:33px!important;font-size:13px!important}
+.twelve-bubble.big.p4{width:36px!important;height:36px!important;font-size:14px!important}
+.twelve-bubble.big.p5{width:40px!important;height:40px!important;font-size:15px!important}
+.twelve-bubble.small.p6{width:17px!important;height:17px!important}
+.twelve-bubble.small.p7{width:16px!important;height:16px!important}
+.twelve-bubble.small.p8{width:15px!important;height:15px!important}
+.twelve-bubble.small.p9{width:14px!important;height:14px!important}
+.twelve-bubble.small.p10{width:13px!important;height:13px!important}
+.twelve-bubble.small.p11{width:12px!important;height:12px!important}
+.twelve-bubble.small.p12{width:11px!important;height:11px!important}
+.twelve-bubble.active{
+  box-shadow:0 0 24px rgba(255,197,51,.9)!important;
+}
+.twelve-caption{
+  font-size:13px!important;
+  color:#dbe8ff!important;
+}
+@media(max-width:760px){
+  .v032-activity-title{grid-template-columns:64px 1fr;font-size:26px!important}
+  .current-bird-hero{font-size:54px}
+  .current-bird-name{font-size:32px}
+  .current-activity-line{font-size:17px}
+  .v032-remaining{font-size:38px!important}
+  .twelve-row{gap:4px!important}
+  .twelve-bubble.big.p1{width:25px!important;height:25px!important}
+  .twelve-bubble.big.p2{width:28px!important;height:28px!important}
+  .twelve-bubble.big.p3{width:31px!important;height:31px!important}
+  .twelve-bubble.big.p4{width:34px!important;height:34px!important}
+  .twelve-bubble.big.p5{width:37px!important;height:37px!important}
+  .twelve-bubble.small.p6{width:15px!important;height:15px!important}
+  .twelve-bubble.small.p7{width:14px!important;height:14px!important}
+  .twelve-bubble.small.p8{width:13px!important;height:13px!important}
+  .twelve-bubble.small.p9{width:12px!important;height:12px!important}
+  .twelve-bubble.small.p10{width:11px!important;height:11px!important}
+  .twelve-bubble.small.p11{width:10px!important;height:10px!important}
+  .twelve-bubble.small.p12{width:9px!important;height:9px!important}
+}
+@media(max-width:390px){
+  .current-bird-name{font-size:28px}
+  .current-bird-hero{font-size:50px}
+}

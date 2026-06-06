@@ -50,9 +50,9 @@ function renderMoon(){
    const start=rising?'0° 🌑':'180° 🌕';
    const end=rising?'180° 🌕':'360° 🌑';
    const halfIndex=rising ? c.tithiIndex : c.tithiIndex-15;
-   const pos=Math.max(1,Math.min(7,Math.ceil(halfIndex/2.15)));
+   const pos=Math.max(1,Math.min(13,Math.ceil(halfIndex/1.25)));
    let marks='';
-   for(let i=1;i<=7;i++){
+   for(let i=1;i<=13;i++){
      const cls=i<pos?'passed':(i===pos?'active':'');
      marks+=`<span class="arc-mark m${i} ${cls}"></span>`;
    }
@@ -60,7 +60,7 @@ function renderMoon(){
    strip.innerHTML=`<div class="lunar-arc-fixed"><span class="arc-label arc-start">${start}</span>${marks}<span class="arc-label arc-end">${end}</span></div>`;
  }
  if($('tithiCaption')){
-   $('tithiCaption').innerHTML=`${c.tithi || 'Active Tithi'}<div class="v034-lunar-small">${Math.round(c.moonDeg)}° · ${c.phase==='Rising Moon'?'0° → 180°':'180° → 360°'}</div>`;
+   $('tithiCaption').innerHTML=`${c.tithi || 'Active Tithi'}<div class="v034-lunar-small">${Math.round(c.moonDeg)}°</div>`;
  }
 }
 function renderMicro(c){
@@ -80,6 +80,16 @@ function renderSamamDots(c){
    root.appendChild(d);
  }
 }
+function activityMeta(activity){
+ const map={
+  Rule:{emoji:'👑',ta:'அரசு',en:'Rule',good:'EXCELLENT TIME'},
+  Eat:{emoji:'🍚',ta:'ஊண்',en:'Eat',good:'GOOD TIME'},
+  Walk:{emoji:'🚶',ta:'நடை',en:'Walk',good:'AVERAGE TIME'},
+  Sleep:{emoji:'🛏',ta:'துயில்',en:'Sleep',good:'WEAK TIME'},
+  Death:{emoji:'☠',ta:'சாவு',en:'Death',good:'AVOID TIME'}
+ };
+ return map[activity]||{emoji:'',ta:activity,en:activity,good:''};
+}
 function qualityForActivity(activity){
  const map={
   Rule:{stars:'⭐⭐⭐⭐⭐',label:'Excellent'},
@@ -98,22 +108,24 @@ function renderTwelveParts(c){
  root.innerHTML='';
  for(let i=1;i<=12;i++){
    const b=document.createElement('span');
-   b.className='twelve-bubble '+(i<=5?'big':'small')+' '+(i<active?'passed':(i===active?'active':''));
+   b.className='twelve-bubble '+(i<=5?'big':'small')+' p'+i+' '+(i<active?'passed':(i===active?'active':''));
    b.textContent=i<=5?String(i):'';
    root.appendChild(b);
  }
- if($('twelveCaption')) $('twelveCaption').textContent=`Activity progress · ${Math.round(progress*100)}% · part ${active}/12`;
+ if($('twelveCaption')) $('twelveCaption').textContent=`Part ${active} / 12`;
  const q=qualityForActivity(c.activity_en);
  if($('qualityText')) $('qualityText').textContent=`${q.stars} ${q.label}`;
 }
 function renderCurrent(){
  let c=state.current;if(!c)return;
  let now=new Date(),remain=c.to-now,prog=Math.min(100,Math.max(0,((now-c.from)/c.duration)*100));
- if($('currentTitle')) $('currentTitle').textContent=`${c.bird.icon} ${c.bird.name} • ${c.activity_ta || c.activity_en}`;
+ const meta=activityMeta(c.activity_en);
+ const q=qualityForActivity(c.activity_en);
+ if($('currentTitle')) $('currentTitle').innerHTML=`<span class="current-bird-hero">${c.bird.icon}</span><span><span class="current-bird-name">${c.bird.name}</span><span class="current-activity-line">${meta.emoji} ${c.activity_ta || meta.ta} • ${meta.en}</span><span class="good-time-badge">${q.stars} ${meta.good}</span></span>`;
  if($('countdownText')) $('countdownText').textContent=`⏳ ${mmss(remain)}`;
- if($('activityDurationText')) $('activityDurationText').textContent=`${mmss(c.duration)} total · ${fmt(c.from)} → ${fmt(c.to)}`;
+ if($('activityDurationText')) $('activityDurationText').textContent=`${mmss(c.duration)} total · ends ${fmt(c.to)}`;
  if($('activityBar')) $('activityBar').style.width=`0%`;
- if($('activityPercentText')) $('activityPercentText').textContent=`${Math.round(prog)}% complete`;
+ if($('activityPercentText')) $('activityPercentText').textContent='';
  if($('sunText')) $('sunText').textContent=`${fmt(state.sunrise)} / ${fmt(state.sunset)}`;
  if($('periodText')) $('periodText').textContent=c.period;
  if($('samamText')) $('samamText').textContent=`${c.period.toLowerCase()} samam`;
