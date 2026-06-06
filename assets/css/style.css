@@ -523,3 +523,26 @@ input,
  .mobile-bottom-nav .ico{font-size:15px!important;}
  .mobile-bottom-nav a{font-size:8px!important;}
 }
+
+.lunar-top,
+.lunar-bottom{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:900;
+}
+
+.lunar-top{
+  font-size:11px;
+  color:#cfe0ff;
+  margin-bottom:4px;
+}
+
+.lunar-bottom{
+  font-size:18px;
+  margin-top:4px;
+}
+
+.arc-label{
+  display:none;
+}
