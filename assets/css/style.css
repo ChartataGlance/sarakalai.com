@@ -556,3 +556,16 @@ input,
 .twelve-bubble.active{animation:none!important;box-shadow:0 0 18px rgba(255,197,51,.75)!important}.twelve-bubble.active::after{display:none!important}
 @media(max-width:760px){.v032-activity-title{grid-template-columns:84px 1fr!important}.current-bird-hero{font-size:80px!important}.current-bird-name{font-size:34px!important}.atcharam-badge{min-width:52px;padding:7px 8px}.atcharam-badge b{font-size:25px}}
 @media(max-width:390px){.v032-activity-title{grid-template-columns:76px 1fr!important}.current-bird-hero{font-size:72px!important}.current-bird-name{font-size:31px!important}}
+
+/* v045 smoother running 12-part progress */
+.twelve-row::after{
+  transition:width 2s linear !important;
+  background:
+    linear-gradient(90deg, rgba(255,197,51,.95), rgba(255,240,160,.95), rgba(255,197,51,.95)) !important;
+  background-size:200% 100% !important;
+  animation:ppRunFill 2s linear infinite !important;
+}
+@keyframes ppRunFill{
+  from{background-position:0% 0}
+  to{background-position:200% 0}
+}

@@ -1,6 +1,31 @@
-# v044
+# Sarakalai Panchapatchi
 
-Atcharam in live hero, duplicate rating removed, bigger bird, horizontal running 12-part progress.
+GitHub-ready static Panchapatchi live timing app.
 
-assets/js/app.js: OK
-assets/js/profile.js: OK
+## Pages
+
+- `index.html` — live Panchapatchi card
+- `profile.html` — browser-saved birth profile
+- `reference.html` — calculation reference
+
+## SEO included
+
+- `robots.txt`
+- `sitemap.xml`
+- canonical tags
+- Open Graph tags
+- Twitter card tags
+- WebApplication structured data
+- `site.webmanifest`
+
+## GitHub Pages
+
+Repository root should contain these files. Set GitHub Pages to publish from the root branch folder.
+
+Custom domain:
+
+```txt
+sarakalai.com
+```
+
+Generated: 2026-06-06

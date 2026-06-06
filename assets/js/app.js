@@ -8,6 +8,7 @@ const LORDS=["Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercu
 const RASI=[["மேஷம்","Aries"],["ரிஷபம்","Taurus"],["மிதுனம்","Gemini"],["கடகம்","Cancer"],["சிம்மம்","Leo"],["கன்னி","Virgo"],["துலாம்","Libra"],["விருச்சிகம்","Scorpio"],["தனுசு","Sagittarius"],["மகரம்","Capricorn"],["கும்பம்","Aquarius"],["மீனம்","Pisces"]];
 const $=id=>document.getElementById(id);let APP,state={mode:'fallback',lat:null,lon:null,timeline:[],current:null};
 const STORAGE_KEY='sarakalai_timing_v1';
+let lastTwelveRender=0;
 function saveTiming(mode, extra={}){
   localStorage.setItem(STORAGE_KEY, JSON.stringify({mode, savedAt:Date.now(), ...extra}));
 }
@@ -105,6 +106,8 @@ function renderTwelveParts(c){
  const root=$('twelveRow');if(!root||!c)return;
  const now=new Date();
  const progress=Math.min(1,Math.max(0,(now-c.from)/c.duration));
+ if(now.getTime()-lastTwelveRender<2000 && root.children.length){return;}
+ lastTwelveRender=now.getTime();
  const active=Math.min(12,Math.max(1,Math.floor(progress*12)+1));
  root.style.setProperty('--progress', `${Math.min(100,Math.max(0,progress*100))}%`);
  root.innerHTML='';
