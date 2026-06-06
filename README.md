@@ -1,6 +1,6 @@
-# v042 render fixed
+# Sarakalai Panchapatchi v043
 
-Clean rebuilt app. Lunar labels: 180°/360° top, moon emojis bottom corners. Compact mobile nav.
+Animated 12-part progress row. Removed Part x/12 text. Active point pulses to show live running progress.
 
 assets/js/app.js: OK
 assets/js/profile.js: OK

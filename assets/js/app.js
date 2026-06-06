@@ -113,7 +113,7 @@ function renderTwelveParts(c){
    b.textContent=i<=5?String(i):'';
    root.appendChild(b);
  }
- if($('twelveCaption')) $('twelveCaption').textContent=`Part ${active} / 12`;
+ if($('twelveCaption')) $('twelveCaption').textContent='';
  const q=qualityForActivity(c.activity_en);
  if($('qualityText')) $('qualityText').textContent=`${q.stars} ${q.label}`;
 }

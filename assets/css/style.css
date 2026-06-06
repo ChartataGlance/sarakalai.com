@@ -508,3 +508,35 @@ input,
 .lunar-arc-fixed .arc-mark{position:absolute;width:13px!important;height:13px!important;border-radius:50%;border:1px solid #31476e;background:#0d1930}.lunar-arc-fixed .arc-mark.passed{background:#31476e}.lunar-arc-fixed .arc-mark.active{background:var(--gold);border-color:var(--gold);box-shadow:0 0 18px rgba(255,197,51,.85);transform:scale(1.35)}
 .lunar-arc-fixed .m1{left:8%!important;top:32px!important}.lunar-arc-fixed .m2{left:15%!important;top:21px!important}.lunar-arc-fixed .m3{left:22%!important;top:13px!important}.lunar-arc-fixed .m4{left:29%!important;top:7px!important}.lunar-arc-fixed .m5{left:36%!important;top:4px!important}.lunar-arc-fixed .m6{left:43%!important;top:2px!important}.lunar-arc-fixed .m7{left:50%!important;top:1px!important}.lunar-arc-fixed .m8{left:57%!important;top:2px!important}.lunar-arc-fixed .m9{left:64%!important;top:4px!important}.lunar-arc-fixed .m10{left:71%!important;top:7px!important}.lunar-arc-fixed .m11{left:78%!important;top:13px!important}.lunar-arc-fixed .m12{left:85%!important;top:21px!important}.lunar-arc-fixed .m13{left:92%!important;top:32px!important}
 .v033-tithi-name{font-size:13px!important;margin-top:2px!important;color:var(--gold);font-weight:950;text-align:center}.v034-lunar-small{display:inline-block;margin-left:6px;color:var(--muted);font-size:10px!important}
+
+/* v043 animated 12-part progress, no Part text */
+.twelve-row{
+  position:relative;
+  margin-top:10px!important;
+  padding:8px 2px 6px!important;
+  overflow:visible!important;
+}
+.twelve-bubble{position:relative}
+.twelve-bubble.active::after{
+  content:"";
+  position:absolute;
+  inset:-7px;
+  border-radius:999px;
+  border:2px solid rgba(255,197,51,.55);
+  animation:ppPulse 1.15s ease-out infinite;
+}
+.twelve-bubble.active{
+  animation:ppActiveBeat 1.15s ease-in-out infinite;
+}
+.twelve-bubble.passed{
+  box-shadow:0 0 8px rgba(255,197,51,.18);
+}
+.twelve-caption{display:none!important}
+@keyframes ppPulse{
+  0%{transform:scale(.7);opacity:.9}
+  100%{transform:scale(1.45);opacity:0}
+}
+@keyframes ppActiveBeat{
+  0%,100%{transform:scale(1.18)}
+  50%{transform:scale(1.32)}
+}
