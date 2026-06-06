@@ -195,6 +195,7 @@ async function init(){
  renderTree('Rising Moon','risingTree');
  renderTree('Waning Moon','waningTree');
 
+ if(!$('locateBtn') && !$('currentTitle')){return;}
  if($('locateBtn')) $('locateBtn').onclick=useLocation;
  if($('manualBtn')) $('manualBtn').onclick=()=>{$('manualPanel').style.display='block'};
  if($('fallbackBtn')) $('fallbackBtn').onclick=()=>setMode('fallback');
@@ -223,10 +224,12 @@ async function init(){
    setMode('fallback', false);
  }else{
    showTimingChoices(true);
-   setMode('fallback', false);
-   showTimingChoices(true);
-   $('statusText').textContent='Choose timing method';
-   $('statusDetails').textContent='Use location for local timing, or choose another method.';
+   if($('statusText')){
+     setMode('fallback', false);
+     showTimingChoices(true);
+     $('statusText').textContent='Choose timing method';
+     $('statusDetails').textContent='Use location for local timing, or choose another method.';
+   }
  }
  setInterval(()=>{if(APP){build();renderCurrent()}},1000)
 }
