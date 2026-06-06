@@ -1,5 +1,5 @@
-# Sarakalai Panchapatchi v039
+# Sarakalai Panchapatchi v040
 
-Removes remaining text, hides inner part, stretches 12-part progress, and enlarges lunar panel.
+Landscape lunar panel moved above activity; current bird/activity enlarged.
 
 JS syntax OK

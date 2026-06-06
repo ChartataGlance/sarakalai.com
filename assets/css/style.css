@@ -366,3 +366,22 @@ input,
 .twelve-caption{font-size:13px!important;margin-top:4px!important}
 .v032-inner-line{display:none!important}
 @media(max-width:390px){.v033-main-row{grid-template-columns:minmax(0,1fr) 116px!important}.twelve-bubble.big{width:31px!important;height:31px!important}.twelve-bubble.small{width:13px!important;height:13px!important}}
+
+/* v040: landscape lunar panel above activity + bigger current bird */
+.v033-main-row{display:block!important}
+.v033-lunar-side{width:100%!important;min-height:92px!important;max-height:none!important;padding:8px 10px!important;margin:0 0 12px 0!important;border-radius:18px!important}
+.v033-lunar-curve{width:100%!important}
+.lunar-arc-fixed{height:62px!important;max-width:360px;margin:0 auto}
+.lunar-arc-fixed .arc-label{top:25px!important;font-size:12px!important}
+.lunar-arc-fixed .arc-start{left:0!important}.lunar-arc-fixed .arc-end{right:0!important}
+.lunar-arc-fixed .arc-mark{width:16px!important;height:16px!important}
+.lunar-arc-fixed .m1{left:14%!important;top:32px!important}.lunar-arc-fixed .m2{left:26%!important;top:16px!important}.lunar-arc-fixed .m3{left:39%!important;top:6px!important}.lunar-arc-fixed .m4{left:50%!important;top:2px!important}.lunar-arc-fixed .m5{left:61%!important;top:6px!important}.lunar-arc-fixed .m6{left:74%!important;top:16px!important}.lunar-arc-fixed .m7{left:86%!important;top:32px!important}
+.v033-tithi-name{font-size:13px!important;margin-top:2px!important}
+.v034-lunar-small{display:inline-block;margin-left:6px;font-size:10px!important}
+.v032-activity-title{font-size:32px!important;line-height:1.1!important}
+.v032-remaining{font-size:40px!important}
+.twelve-row{overflow:visible!important;gap:5px!important}
+.twelve-bubble.big{width:36px!important;height:36px!important}
+.twelve-bubble.small{width:14px!important;height:14px!important}
+@media(max-width:760px){.v032-activity-title{font-size:31px!important}.v032-remaining{font-size:38px!important}.v033-lunar-side{min-height:86px!important;padding:7px 8px!important}.lunar-arc-fixed{height:58px!important}.lunar-arc-fixed .arc-mark{width:15px!important;height:15px!important}.twelve-bubble.big{width:34px!important;height:34px!important}.twelve-bubble.small{width:12px!important;height:12px!important}}
+@media(max-width:390px){.v032-activity-title{font-size:28px!important}.v032-remaining{font-size:34px!important}.twelve-bubble.big{width:31px!important;height:31px!important}.twelve-bubble.small{width:10px!important;height:10px!important}}
