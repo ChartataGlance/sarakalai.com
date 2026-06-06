@@ -106,6 +106,7 @@ function renderTwelveParts(c){
  const now=new Date();
  const progress=Math.min(1,Math.max(0,(now-c.from)/c.duration));
  const active=Math.min(12,Math.max(1,Math.floor(progress*12)+1));
+ root.style.setProperty('--progress', `${Math.min(100,Math.max(0,progress*100))}%`);
  root.innerHTML='';
  for(let i=1;i<=12;i++){
    const b=document.createElement('span');
@@ -114,15 +115,14 @@ function renderTwelveParts(c){
    root.appendChild(b);
  }
  if($('twelveCaption')) $('twelveCaption').textContent='';
- const q=qualityForActivity(c.activity_en);
- if($('qualityText')) $('qualityText').textContent=`${q.stars} ${q.label}`;
+ if($('qualityText')) $('qualityText').textContent='';
 }
 function renderCurrent(){
  let c=state.current;if(!c)return;
  let now=new Date(),remain=c.to-now,prog=Math.min(100,Math.max(0,((now-c.from)/c.duration)*100));
  const meta=activityMeta(c.activity_en);
  const q=qualityForActivity(c.activity_en);
- if($('currentTitle')) $('currentTitle').innerHTML=`<span class="current-bird-hero">${c.bird.icon}</span><span><span class="current-bird-name">${c.bird.name}</span><span class="current-activity-line">${meta.emoji} ${c.activity_ta || meta.ta} • ${meta.en}</span><span class="good-time-badge">${q.stars} ${meta.good}</span></span>`;
+ if($('currentTitle')) $('currentTitle').innerHTML=`<span class="current-bird-hero">${c.bird.icon}</span><span><span class="live-hero-meta"><span class="current-bird-name">${c.bird.name}</span><span class="atcharam-badge"><small>அட்சரம்</small><b>${c.atcharam || '-'}</b></span></span><span class="current-activity-line">${meta.emoji} ${c.activity_ta || meta.ta} • ${meta.en}</span><span class="good-time-badge">${meta.good}</span></span>`;
  if($('countdownText')) $('countdownText').textContent=`⏳ ${mmss(remain)}`;
  if($('activityDurationText')) $('activityDurationText').textContent=`${mmss(c.duration)} total · ends ${fmt(c.to)}`;
  if($('activityBar')) $('activityBar').style.width=`0%`;

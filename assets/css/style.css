@@ -540,3 +540,19 @@ input,
   0%,100%{transform:scale(1.18)}
   50%{transform:scale(1.32)}
 }
+
+/* v044 atcharam + running horizontal progress */
+.v032-activity-title{grid-template-columns:92px 1fr!important;gap:14px!important;align-items:center!important}
+.current-bird-hero{font-size:86px!important;line-height:1!important;filter:drop-shadow(0 0 22px rgba(255,197,51,.32))!important}
+.current-bird-name{font-size:38px!important;line-height:1!important}
+.live-hero-meta{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.atcharam-badge{margin-left:auto;min-width:58px;text-align:center;padding:8px 10px;border-radius:16px;border:1px solid rgba(255,197,51,.45);background:rgba(255,197,51,.10);color:var(--gold);font-weight:950}
+.atcharam-badge small{display:block;font-size:9px;color:#cfe0ff;text-transform:uppercase;margin-bottom:1px}.atcharam-badge b{display:block;font-size:28px;line-height:1}
+.quality-line{display:none!important}.good-time-badge{margin-top:7px!important}
+.twelve-row{--progress:0%;position:relative!important;height:46px;padding:8px 0!important;margin-top:12px!important;overflow:visible!important}
+.twelve-row::before{content:"";position:absolute;left:0;right:0;top:50%;height:6px;transform:translateY(-50%);border-radius:999px;background:#0b1831;border:1px solid #243a60}
+.twelve-row::after{content:"";position:absolute;left:0;top:50%;width:var(--progress);height:6px;transform:translateY(-50%);border-radius:999px;background:linear-gradient(90deg,rgba(255,197,51,.95),rgba(255,240,160,.95));box-shadow:0 0 18px rgba(255,197,51,.35);transition:width .9s linear}
+.twelve-bubble{z-index:2;background:#0d1930!important}.twelve-bubble.passed,.twelve-bubble.active{background:var(--gold)!important;color:#071225!important;border-color:var(--gold)!important}
+.twelve-bubble.active{animation:none!important;box-shadow:0 0 18px rgba(255,197,51,.75)!important}.twelve-bubble.active::after{display:none!important}
+@media(max-width:760px){.v032-activity-title{grid-template-columns:84px 1fr!important}.current-bird-hero{font-size:80px!important}.current-bird-name{font-size:34px!important}.atcharam-badge{min-width:52px;padding:7px 8px}.atcharam-badge b{font-size:25px}}
+@media(max-width:390px){.v032-activity-title{grid-template-columns:76px 1fr!important}.current-bird-hero{font-size:72px!important}.current-bird-name{font-size:31px!important}}
