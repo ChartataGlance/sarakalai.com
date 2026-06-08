@@ -14,3 +14,8 @@ Generated: 2026-06-08
 Lookup input reload fixed. Normal live timer no longer overrides lookup. Countdown/progress use selected date/time.
 assets/js/app.js: OK
 assets/js/lookup.js: OK
+
+## v049
+Fixed lookup.js parseTime issue with standalone lookupParseTime().
+assets/js/app.js: OK
+assets/js/lookup.js: OK
