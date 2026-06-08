@@ -234,6 +234,6 @@ async function init(){
      if($('statusDetails')) $('statusDetails').textContent='Use location for local timing, or choose another method.';
    }
  }
- if(!window.SARAKALAI_LOOKUP_PAGE){if(!window.SARAKALAI_LOOKUP_PAGE){setInterval(()=>{if(APP){build();renderCurrent()}},1000)}}
+ if(!window.SARAKALAI_LOOKUP_PAGE){if(!window.SARAKALAI_LOOKUP_PAGE){if(!window.SARAKALAI_LOOKUP_PAGE){setInterval(()=>{if(APP){build();renderCurrent()}},1000)}}}
 }
 init();

@@ -19,3 +19,10 @@ assets/js/lookup.js: OK
 Fixed lookup.js parseTime issue with standalone lookupParseTime().
 assets/js/app.js: OK
 assets/js/lookup.js: OK
+
+## v050 lookup clean build/render
+Rebuilt lookup.js around clean buildLookup() and renderLookup().
+No dependency on DAY_TA, DAY_EN, parseTime, fmt, mmss, or CLS.
+
+assets/js/app.js: OK
+assets/js/lookup.js: OK
