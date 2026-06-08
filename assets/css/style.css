@@ -569,3 +569,11 @@ input,
   from{background-position:0% 0}
   to{background-position:200% 0}
 }
+
+/* v046 realtime profile + future time checker */
+.profile-mode{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.profile-mode button{flex:1;min-width:145px}
+.profile-mode button.active{background:var(--gold)!important;color:#071225!important}
+.profile-form input:focus{outline:2px solid rgba(255,197,51,.5)}
+.profile-card.preview-active{display:block!important}
+@media(max-width:760px){.profile-mode{display:grid;grid-template-columns:1fr 1fr}.profile-mode button{min-width:0;padding:10px 8px}}
